@@ -29,5 +29,11 @@ public class SanPham {
 
     @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL)
     private List<ChiTietHoaDon> chiTietHoaDons;
+
+    @Column(name = "gia")
+    private Double gia;
+
+    @Column(name = "soLuong")
+    private Integer soLuong;
 }
 

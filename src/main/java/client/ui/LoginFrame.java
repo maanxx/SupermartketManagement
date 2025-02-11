@@ -10,7 +10,7 @@ public class LoginFrame extends JFrame {
     private JTextField txtUsername;
     private JPasswordField txtPassword;
     private JButton btnLogin;
-    private final NhanVienService nhanVienService; // Giữ kết nối RMI
+    private final NhanVienService nhanVienService;
 
     public LoginFrame(NhanVienService nhanVienService) {
         this.nhanVienService = nhanVienService; // Nhận từ MainClient
