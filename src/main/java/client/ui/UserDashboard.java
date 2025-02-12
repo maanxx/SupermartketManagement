@@ -1,16 +1,18 @@
 package client.ui;
 
 import shared.dto.NhanVienDTO;
+import shared.services.NhanVienService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class UserDashboard extends JFrame {
+    private NhanVienService nhanVienService;
     private NhanVienDTO loggedInNhanVien;
     private JTable tableSanPham;
 
-    public UserDashboard(NhanVienDTO nhanVien) {
+    public UserDashboard(NhanVienDTO nhanVien, NhanVienService nhanVienService) {
         this.loggedInNhanVien = nhanVien;
 
         // Frame settings
@@ -102,7 +104,7 @@ public class UserDashboard extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             dispose();
-            new LoginFrame(null); // Quay lại màn hình đăng nhập
+            new LoginFrame(nhanVienService); // Quay lại màn hình đăng nhập
         }
     }
 }

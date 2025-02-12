@@ -79,9 +79,9 @@ public class LoginFrame extends JFrame {
 
                 // Phân quyền giữa Admin và Nhân viên
                 if ("ADMIN".equalsIgnoreCase(nhanVien.getRole())) {
-                    new AdminDashboard(nhanVien);  // Mở giao diện Admin
+                    new AdminDashboard(nhanVien, nhanVienService);  // Mở giao diện Admin
                 } else {
-                    new UserDashboard(nhanVien);  // Mở giao diện Nhân viên
+                    new UserDashboard(nhanVien, nhanVienService);  // Mở giao diện Nhân viên
                 }
 
                 dispose(); // Đóng cửa sổ đăng nhập

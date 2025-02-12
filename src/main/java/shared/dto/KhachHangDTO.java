@@ -9,12 +9,10 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NhanVienDTO implements Serializable {
-    private String maNhanVien;
-    private String hoTen;
-    private String ngaySinh;
+public class KhachHangDTO implements Serializable {
+    private String maKhachHang;
+    private String tenKhachHang;
     private String soDienThoai;
-    private String diaChi;
-    private String chucDanh;
-    private String role;
+    private String email;
+    private float diemTichLuy;
 }

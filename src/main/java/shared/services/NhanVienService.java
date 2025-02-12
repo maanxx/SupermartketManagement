@@ -10,4 +10,7 @@ public interface NhanVienService extends Remote {
     NhanVienDTO getNhanVienById(String id) throws RemoteException;
     void updatePassword(String id, String newPassword) throws RemoteException;
     List<NhanVienDTO> getAllNhanViens() throws RemoteException;
+    void addNhanVien(NhanVienDTO nhanVien) throws RemoteException;
+    void updateNhanVien(NhanVienDTO nhanVien) throws RemoteException;
+    void deleteNhanVien(String id) throws RemoteException;
 }

@@ -20,27 +20,13 @@ public class NhanVienServiceImpl extends UnicastRemoteObject implements NhanVien
     @Override
     public NhanVienDTO login(String username, String password) throws RemoteException {
         NhanVien nv = nhanVienDAO.findByUsernameAndPassword(username, password);
-        return nv != null ? new NhanVienDTO(
-                nv.getMaNhanVien(),
-                nv.getHoTen(),
-                nv.getSoDienThoai(),
-                nv.getDiaChi(),
-                nv.getChucDanh(),
-                nv.getRole()  // ✅ Trả về role của nhân viên
-        ) : null;
+        return nv != null ? convertToDTO(nv) : null;
     }
 
     @Override
     public NhanVienDTO getNhanVienById(String id) throws RemoteException {
         NhanVien nv = nhanVienDAO.findById(id);
-        return nv != null ? new NhanVienDTO(
-                nv.getMaNhanVien(),
-                nv.getHoTen(),
-                nv.getSoDienThoai(),
-                nv.getDiaChi(),
-                nv.getChucDanh(),
-                nv.getRole()  // ✅ Thêm role vào DTO
-        ) : null;
+        return nv != null ? convertToDTO(nv) : null;
     }
 
     @Override
@@ -55,14 +41,58 @@ public class NhanVienServiceImpl extends UnicastRemoteObject implements NhanVien
     @Override
     public List<NhanVienDTO> getAllNhanViens() throws RemoteException {
         return nhanVienDAO.findAll().stream()
-                .map(nv -> new NhanVienDTO(
-                        nv.getMaNhanVien(),
-                        nv.getHoTen(),
-                        nv.getSoDienThoai(),
-                        nv.getDiaChi(),
-                        nv.getChucDanh(),
-                        nv.getRole()  // ✅ Đảm bảo role được gửi về
-                ))
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addNhanVien(NhanVienDTO nhanVienDTO) throws RemoteException {
+        NhanVien nv = new NhanVien(
+                nhanVienDTO.getMaNhanVien(),
+                nhanVienDTO.getHoTen(),
+                nhanVienDTO.getNgaySinh(),
+                nhanVienDTO.getSoDienThoai(),
+                nhanVienDTO.getDiaChi(),
+                nhanVienDTO.getChucDanh(),
+                nhanVienDTO.getRole(),
+                null, // Chưa có tài khoản
+                null, // Hóa đơn rỗng ban đầu
+                null  // Hóa đơn nhập rỗng ban đầu
+        );
+        nhanVienDAO.save(nv);
+    }
+
+    @Override
+    public void updateNhanVien(NhanVienDTO nhanVienDTO) throws RemoteException {
+        NhanVien nv = nhanVienDAO.findById(nhanVienDTO.getMaNhanVien());
+        if (nv != null) {
+            nv.setHoTen(nhanVienDTO.getHoTen());
+            nv.setNgaySinh(nhanVienDTO.getNgaySinh());
+            nv.setSoDienThoai(nhanVienDTO.getSoDienThoai());
+            nv.setDiaChi(nhanVienDTO.getDiaChi());
+            nv.setChucDanh(nhanVienDTO.getChucDanh());
+            nv.setRole(nhanVienDTO.getRole());
+            nhanVienDAO.update(nv);
+        }
+    }
+
+    @Override
+    public void deleteNhanVien(String id) throws RemoteException {
+        NhanVien nv = nhanVienDAO.findById(id);
+        if (nv != null) {
+            nhanVienDAO.delete(nv);
+        }
+    }
+
+    private NhanVienDTO convertToDTO(NhanVien nv) {
+        return new NhanVienDTO(
+                nv.getMaNhanVien(),
+                nv.getHoTen(),
+                nv.getNgaySinh(),
+                nv.getSoDienThoai(),
+                nv.getDiaChi(),
+                nv.getChucDanh(),
+                nv.getRole()
+        );
     }
 }

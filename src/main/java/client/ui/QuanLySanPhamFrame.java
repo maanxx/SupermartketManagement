@@ -1,21 +1,21 @@
 package client.ui;
 
-import server.dao.SanPhamDAO;
-import server.entity.SanPham;
+import shared.dto.SanPhamDTO;
+import shared.services.SanPhamService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class QuanLySanPhamFrame extends JFrame {
-    private SanPhamDAO sanPhamDAO;
+    private SanPhamService sanPhamService;
     private JTable tableSanPham;
     private DefaultTableModel tableModel;
 
-    public QuanLySanPhamFrame() {
-        // Khởi tạo DAO
-        sanPhamDAO = new SanPhamDAO();
+    public QuanLySanPhamFrame(SanPhamService sanPhamService) {
+        this.sanPhamService = sanPhamService;
 
         // Cấu hình cửa sổ chính
         setTitle("Quản lý sản phẩm");
@@ -77,24 +77,26 @@ public class QuanLySanPhamFrame extends JFrame {
     }
 
     private void loadProductData() {
-        // Lấy dữ liệu từ cơ sở dữ liệu qua DAO
-        List<SanPham> productList = sanPhamDAO.findAll();
-        tableModel.setRowCount(0); // Xóa dữ liệu cũ
-        for (SanPham sp : productList) {
-            Object[] row = {
-                    sp.getMaSanPham(),
-                    sp.getTenSanPham(),
-                    sp.getLoaiSanPham() != null ? sp.getLoaiSanPham().getTenLoai() : "N/A",
-                    sp.getNhaCungCap() != null ? sp.getNhaCungCap().getTenNhaCungCap() : "N/A",
-                    sp.getGia(),
-                    sp.getSoLuong()
-            };
-            tableModel.addRow(row);
+        try {
+            List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
+            tableModel.setRowCount(0); // Xóa dữ liệu cũ
+            for (SanPhamDTO sp : productList) {
+                Object[] row = {
+                        sp.getMaSanPham(),
+                        sp.getTenSanPham(),
+                        sp.getMaLoaiSanPham(),
+                        sp.getMaNhaCungCap(),
+                        sp.getGia(),
+                        sp.getSoLuong()
+                };
+                tableModel.addRow(row);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
     private void addProduct() {
-        // Hiển thị hộp thoại thêm sản phẩm mới
         JTextField txtMaSP = new JTextField();
         JTextField txtTenSP = new JTextField();
         JTextField txtLoai = new JTextField();
@@ -113,14 +115,20 @@ public class QuanLySanPhamFrame extends JFrame {
 
         int option = JOptionPane.showConfirmDialog(this, fields, "Thêm sản phẩm mới", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            // Thêm sản phẩm mới vào cơ sở dữ liệu
-            SanPham newProduct = new SanPham();
-            newProduct.setMaSanPham(txtMaSP.getText());
-            newProduct.setTenSanPham(txtTenSP.getText());
-            // Gán các thuộc tính khác
-            // ...
-            sanPhamDAO.save(newProduct);
-            loadProductData();
+            try {
+                SanPhamDTO newProduct = new SanPhamDTO(
+                        txtMaSP.getText(),
+                        txtTenSP.getText(),
+                        txtNhaCungCap.getText(),
+                        txtLoai.getText(),
+                        Double.parseDouble(txtGia.getText()),
+                        Integer.parseInt(txtSoLuong.getText())
+                );
+                sanPhamService.addSanPham(newProduct);
+                loadProductData();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -132,29 +140,36 @@ public class QuanLySanPhamFrame extends JFrame {
         }
 
         String maSP = tableModel.getValueAt(selectedRow, 0).toString();
-        SanPham product = sanPhamDAO.findById(maSP);
+        try {
+            SanPhamDTO product = sanPhamService.getSanPhamById(maSP);
 
-        JTextField txtTenSP = new JTextField(product.getTenSanPham());
-        JTextField txtLoai = new JTextField(product.getLoaiSanPham().getTenLoai());
-        JTextField txtNhaCungCap = new JTextField(product.getNhaCungCap().getTenNhaCungCap());
-        JTextField txtGia = new JTextField(String.valueOf(product.getGia()));
-        JTextField txtSoLuong = new JTextField(String.valueOf(product.getSoLuong()));
+            JTextField txtTenSP = new JTextField(product.getTenSanPham());
+            JTextField txtLoai = new JTextField(product.getMaLoaiSanPham());
+            JTextField txtNhaCungCap = new JTextField(product.getMaNhaCungCap());
+            JTextField txtGia = new JTextField(String.valueOf(product.getGia()));
+            JTextField txtSoLuong = new JTextField(String.valueOf(product.getSoLuong()));
 
-        Object[] fields = {
-                "Tên sản phẩm:", txtTenSP,
-                "Loại sản phẩm:", txtLoai,
-                "Nhà cung cấp:", txtNhaCungCap,
-                "Giá:", txtGia,
-                "Số lượng:", txtSoLuong
-        };
+            Object[] fields = {
+                    "Tên sản phẩm:", txtTenSP,
+                    "Loại sản phẩm:", txtLoai,
+                    "Nhà cung cấp:", txtNhaCungCap,
+                    "Giá:", txtGia,
+                    "Số lượng:", txtSoLuong
+            };
 
-        int option = JOptionPane.showConfirmDialog(this, fields, "Sửa sản phẩm", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            product.setTenSanPham(txtTenSP.getText());
-            // Cập nhật các thuộc tính khác
-            // ...
-            sanPhamDAO.update(product);
-            loadProductData();
+            int option = JOptionPane.showConfirmDialog(this, fields, "Sửa sản phẩm", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                product.setTenSanPham(txtTenSP.getText());
+                product.setMaLoaiSanPham(txtLoai.getText());
+                product.setMaNhaCungCap(txtNhaCungCap.getText());
+                product.setGia(Double.parseDouble(txtGia.getText()));
+                product.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+
+                sanPhamService.updateSanPham(product);
+                loadProductData();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -168,9 +183,12 @@ public class QuanLySanPhamFrame extends JFrame {
         String maSP = tableModel.getValueAt(selectedRow, 0).toString();
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa sản phẩm này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            SanPham product = sanPhamDAO.findById(maSP);
-            sanPhamDAO.delete(product);
-            loadProductData();
+            try {
+                sanPhamService.deleteSanPham(maSP);
+                loadProductData();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

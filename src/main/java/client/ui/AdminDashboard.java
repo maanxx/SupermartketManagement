@@ -1,17 +1,20 @@
 package client.ui;
 
 import shared.dto.NhanVienDTO;
+import shared.services.NhanVienService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class AdminDashboard extends JFrame {
+    private NhanVienService nhanVienService;
     private NhanVienDTO loggedInNhanVien;
     private JTable tableNhanVien;
 
-    public AdminDashboard(NhanVienDTO nhanVien) {
+    public AdminDashboard(NhanVienDTO nhanVien, NhanVienService nhanVienService) {
         this.loggedInNhanVien = nhanVien;
+        this.nhanVienService = nhanVienService;
 
         // Frame settings
         setTitle("🛠 Admin Dashboard - " + nhanVien.getHoTen());
@@ -111,7 +114,7 @@ public class AdminDashboard extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             dispose();
-            new LoginFrame(null); // Quay lại màn hình đăng nhập
+            new LoginFrame(nhanVienService);
         }
     }
 }
