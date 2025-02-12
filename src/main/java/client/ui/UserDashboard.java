@@ -1,5 +1,6 @@
 package client.ui;
 
+import client.MainClient;
 import shared.dto.NhanVienDTO;
 import shared.services.NhanVienService;
 
@@ -104,7 +105,7 @@ public class UserDashboard extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             dispose();
-            new LoginFrame(nhanVienService); // Quay lại màn hình đăng nhập
+            SwingUtilities.invokeLater(() -> new LoginFrame(MainClient.getNhanVienService()));
         }
     }
 }
