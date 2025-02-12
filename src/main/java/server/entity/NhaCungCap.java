@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "NhaCungCap")
 @Data
+@ToString(exclude = { "sanPhams" })
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

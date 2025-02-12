@@ -32,7 +32,7 @@ public class MainServer {
 
             // Đăng ký dịch vụ HoDonService
             HoaDonService hoaDonService = new HoaDonServiceImpl();
-            registry.rebind("KhachHangService", khachHangService);
+            registry.rebind("HoaDonService", hoaDonService);
 
             System.out.println(" Server RMI đang chạy trên cổng 1099...");
             System.out.println(" NhanVienService đã đăng ký!");

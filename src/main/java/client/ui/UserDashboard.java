@@ -3,20 +3,22 @@ package client.ui;
 import client.MainClient;
 import shared.dto.NhanVienDTO;
 import shared.services.NhanVienService;
+import shared.services.SanPhamService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class UserDashboard extends JFrame {
-    private NhanVienService nhanVienService;
-    private NhanVienDTO loggedInNhanVien;
-    private JTable tableSanPham;
+    private final NhanVienService nhanVienService;
+    private final SanPhamService sanPhamService;
+    private final NhanVienDTO loggedInNhanVien;
 
     public UserDashboard(NhanVienDTO nhanVien, NhanVienService nhanVienService) {
         this.loggedInNhanVien = nhanVien;
+        this.nhanVienService = nhanVienService;
+        this.sanPhamService = MainClient.getSanPhamService();
 
-        // Frame settings
         setTitle("🛒 User Dashboard - " + nhanVien.getHoTen());
         setSize(1000, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,6 +37,7 @@ public class UserDashboard extends JFrame {
         JButton btnDangXuat = createSidebarButton(" Đăng xuất");
 
         btnBanHang.addActionListener(e -> openThanhToan());
+        btnSanPham.addActionListener(e -> openQuanLySanPham());
         btnDangXuat.addActionListener(e -> logout());
 
         sidebar.add(btnBanHang);
@@ -62,7 +65,7 @@ public class UserDashboard extends JFrame {
         };
 
         DefaultTableModel tableModel = new DefaultTableModel(sampleData, columnNames);
-        tableSanPham = new JTable(tableModel);
+        JTable tableSanPham = new JTable(tableModel);
         tableSanPham.setRowHeight(30);
         tableSanPham.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         tableSanPham.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -99,6 +102,11 @@ public class UserDashboard extends JFrame {
 
     private void openThanhToan() {
         JOptionPane.showMessageDialog(this, " Chức năng thanh toán hóa đơn sẽ được triển khai sau!");
+    }
+
+
+    private void openQuanLySanPham() {
+        new QuanLySanPhamFrame(sanPhamService);
     }
 
     private void logout() {

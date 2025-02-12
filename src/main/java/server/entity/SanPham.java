@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "SanPham")
 @Data
+@ToString(exclude = { "chiTietHoaDons", "nhaCungCap", "loaiSanPham" })
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -19,12 +20,12 @@ public class SanPham {
     @Column(name = "tenSanPham")
     private String tenSanPham;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maNhaCungCap")
     private NhaCungCap nhaCungCap;
 
-    @ManyToOne
-    @JoinColumn(name = "maLoaiSan")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "loaiSanPham")
     private LoaiSanPham loaiSanPham;
 
     @OneToMany(mappedBy = "sanPham", cascade = CascadeType.ALL)

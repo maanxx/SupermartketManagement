@@ -1,5 +1,7 @@
 package client.ui;
 
+import shared.dto.LoaiSanPhamDTO;
+import shared.dto.NhaCungCapDTO;
 import shared.dto.SanPhamDTO;
 import shared.services.SanPhamService;
 
@@ -97,40 +99,67 @@ public class QuanLySanPhamFrame extends JFrame {
     }
 
     private void addProduct() {
-        JTextField txtMaSP = new JTextField();
-        JTextField txtTenSP = new JTextField();
-        JTextField txtLoai = new JTextField();
-        JTextField txtNhaCungCap = new JTextField();
-        JTextField txtGia = new JTextField();
-        JTextField txtSoLuong = new JTextField();
+        try {
+            // Lấy danh sách loại sản phẩm và nhà cung cấp từ server
+            List<LoaiSanPhamDTO> loaiSanPhamList = sanPhamService.getAllLoaiSanPham();
+            List<NhaCungCapDTO> nhaCungCapList = sanPhamService.getAllNhaCungCap();
 
-        Object[] fields = {
-                "Mã sản phẩm:", txtMaSP,
-                "Tên sản phẩm:", txtTenSP,
-                "Loại sản phẩm:", txtLoai,
-                "Nhà cung cấp:", txtNhaCungCap,
-                "Giá:", txtGia,
-                "Số lượng:", txtSoLuong
-        };
+            // Tạo JComboBox để chọn loại sản phẩm và nhà cung cấp
+            JComboBox<String> cboLoaiSanPham = new JComboBox<>();
+            JComboBox<String> cboNhaCungCap = new JComboBox<>();
 
-        int option = JOptionPane.showConfirmDialog(this, fields, "Thêm sản phẩm mới", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            try {
-                SanPhamDTO newProduct = new SanPhamDTO(
-                        txtMaSP.getText(),
-                        txtTenSP.getText(),
-                        txtNhaCungCap.getText(),
-                        txtLoai.getText(),
-                        Double.parseDouble(txtGia.getText()),
-                        Integer.parseInt(txtSoLuong.getText())
-                );
-                sanPhamService.addSanPham(newProduct);
-                loadProductData();
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            for (LoaiSanPhamDTO loai : loaiSanPhamList) {
+                cboLoaiSanPham.addItem(loai.getMaLoai() + " - " + loai.getTenLoai());
             }
+
+            for (NhaCungCapDTO ncc : nhaCungCapList) {
+                cboNhaCungCap.addItem(ncc.getMaNhaCungCap() + " - " + ncc.getTenNhaCungCap());
+            }
+
+            JTextField txtMaSP = new JTextField();
+            JTextField txtTenSP = new JTextField();
+            JTextField txtGia = new JTextField();
+            JTextField txtSoLuong = new JTextField();
+
+            Object[] fields = {
+                    "Mã sản phẩm:", txtMaSP,
+                    "Tên sản phẩm:", txtTenSP,
+                    "Loại sản phẩm:", cboLoaiSanPham,
+                    "Nhà cung cấp:", cboNhaCungCap,
+                    "Giá:", txtGia,
+                    "Số lượng:", txtSoLuong
+            };
+
+            int option = JOptionPane.showConfirmDialog(this, fields, "Thêm sản phẩm mới", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                String selectedLoai = (String) cboLoaiSanPham.getSelectedItem();
+                String selectedNCC = (String) cboNhaCungCap.getSelectedItem();
+
+                if (selectedLoai != null && selectedNCC != null) {
+                    // Lấy mã loại sản phẩm và nhà cung cấp từ chuỗi chọn trong combo box
+                    String maLoai = selectedLoai.split(" - ")[0];
+                    String maNhaCungCap = selectedNCC.split(" - ")[0];
+
+                    SanPhamDTO newProduct = new SanPhamDTO(
+                            txtMaSP.getText(),
+                            txtTenSP.getText(),
+                            maNhaCungCap,
+                            maLoai,
+                            Double.parseDouble(txtGia.getText()),
+                            Integer.parseInt(txtSoLuong.getText())
+                    );
+
+                    sanPhamService.addSanPham(newProduct);
+                    loadProductData();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Vui lòng chọn loại sản phẩm và nhà cung cấp hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
+
 
     private void editProduct() {
         int selectedRow = tableSanPham.getSelectedRow();

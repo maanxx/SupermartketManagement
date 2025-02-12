@@ -27,6 +27,9 @@
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <property name="hibernate.highlight_sql" value="true"/>
+            <property name="hibernate.session.events.log" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

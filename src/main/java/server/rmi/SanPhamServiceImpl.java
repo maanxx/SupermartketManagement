@@ -4,6 +4,8 @@ import server.dao.SanPhamDAO;
 import server.dao.NhaCungCapDAO;
 import server.dao.LoaiSanPhamDAO;
 import server.entity.SanPham;
+import shared.dto.LoaiSanPhamDTO;
+import shared.dto.NhaCungCapDTO;
 import shared.dto.SanPhamDTO;
 import shared.services.SanPhamService;
 
@@ -75,9 +77,33 @@ public class SanPhamServiceImpl extends UnicastRemoteObject implements SanPhamSe
 
     @Override
     public void deleteSanPham(String id) throws RemoteException {
-        SanPham sp = sanPhamDAO.findById(id);
-        if (sp != null) {
-            sanPhamDAO.delete(sp);
+
+        try {
+            SanPham sp = sanPhamDAO.findById(id);
+            if (sp == null) {
+                System.out.println("Không tìm thấy sản phẩm với mã: " + id);
+                return;
+            }
+            sanPhamDAO.deleteSanPham(id);
+            System.out.println(" Xóa thành công sản phẩm: " + id);
+        } catch (Exception e) {
+            System.out.println(" Lỗi khi xóa sản phẩm: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+    @Override
+    public List<LoaiSanPhamDTO> getAllLoaiSanPham() throws RemoteException {
+        return loaiSanPhamDAO.findAll().stream()
+                .map(loai -> new LoaiSanPhamDTO(loai.getMaLoai(), loai.getTenLoai()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NhaCungCapDTO> getAllNhaCungCap() throws RemoteException {
+        return nhaCungCapDAO.findAll().stream()
+                .map(ncc -> new NhaCungCapDTO(ncc.getMaNhaCungCap(), ncc.getTenNhaCungCap()))
+                .collect(Collectors.toList());
+    }
+
 }
