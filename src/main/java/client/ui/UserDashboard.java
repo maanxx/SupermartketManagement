@@ -36,7 +36,7 @@ public class UserDashboard extends JFrame {
         JButton btnThongTinCaNhan = createSidebarButton(" Thông tin cá nhân");
         JButton btnDangXuat = createSidebarButton(" Đăng xuất");
 
-        btnBanHang.addActionListener(e -> openThanhToan());
+        btnBanHang.addActionListener(e -> openBanHang());
         btnSanPham.addActionListener(e -> openQuanLySanPham());
         btnThongTinCaNhan.addActionListener(e -> openThongTinCaNhan());
         btnDangXuat.addActionListener(e -> logout());
@@ -124,9 +124,10 @@ public class UserDashboard extends JFrame {
         }
     }
 
-    private void openThanhToan() {
-        JOptionPane.showMessageDialog(this, " Chức năng thanh toán hóa đơn sẽ được triển khai sau!");
+    private void openBanHang() {
+        new QuanLyBanHangFrame(sanPhamService);
     }
+
 
     private void openQuanLySanPham() {
         new QuanLySanPhamFrame(sanPhamService);

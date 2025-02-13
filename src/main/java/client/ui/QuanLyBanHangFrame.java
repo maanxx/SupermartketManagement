@@ -1,137 +1,220 @@
 package client.ui;
 
+import shared.dto.SanPhamDTO;
+import shared.services.SanPhamService;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.ArrayList;
 
 public class QuanLyBanHangFrame extends JFrame {
-    private JTable tableSanPham;
-    private JTable tableGioHang;
+    private final SanPhamService sanPhamService;
+    private JTable tableSanPham, tableGioHang;
+    private DefaultTableModel tableModelSanPham, tableModelGioHang;
+    private JTextField txtSearch;
     private JLabel lblTongTien;
+    private List<SanPhamDTO> gioHang;
 
-    public QuanLyBanHangFrame() {
-        // Frame settings
-        setTitle(" Quản Lý Bán Hàng");
-        setSize(1200, 700);
+    public QuanLyBanHangFrame(SanPhamService sanPhamService) {
+        this.sanPhamService = sanPhamService;
+        this.gioHang = new ArrayList<>();
+
+        setTitle("Bán Hàng");
+        setSize(1100, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Header
+        // Header Panel
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(new Color(52, 73, 94));
-        headerPanel.setPreferredSize(new Dimension(800, 100));
-        JLabel lblHeader = new JLabel(" Quản Lý Bán Hàng", SwingConstants.CENTER);
-        lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        JLabel lblHeader = new JLabel("Bán Hàng", SwingConstants.CENTER);
+        lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 24));
         lblHeader.setForeground(Color.WHITE);
         headerPanel.add(lblHeader, BorderLayout.CENTER);
-
-        // Left panel (Product List)
-        JPanel leftPanel = new JPanel(new BorderLayout());
-        leftPanel.setPreferredSize(new Dimension(450, 0));
-        JLabel lblSanPham = new JLabel(" Danh Sách Sản Phẩm", SwingConstants.CENTER);
-        lblSanPham.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblSanPham.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        leftPanel.add(lblSanPham, BorderLayout.NORTH);
-
-        String[] columnSanPham = {"Mã SP", "Tên SP", "Loại", "Giá", "SL"};
-        Object[][] dataSanPham = {}; // Load data từ DB
-        DefaultTableModel modelSanPham = new DefaultTableModel(dataSanPham, columnSanPham);
-        tableSanPham = new JTable(modelSanPham);
-        JScrollPane scrollSanPham = new JScrollPane(tableSanPham);
-        leftPanel.add(scrollSanPham, BorderLayout.CENTER);
-
-        JButton btnThemVaoGio = new JButton("➕ Thêm vào Giỏ Hàng");
-        btnThemVaoGio.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        btnThemVaoGio.addActionListener(e -> themVaoGioHang());
-        leftPanel.add(btnThemVaoGio, BorderLayout.SOUTH);
-
-        // Right panel (Cart and Total)
-        JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new Dimension(700, 0));
-
-        JLabel lblGioHang = new JLabel(" Giỏ Hàng", SwingConstants.CENTER);
-        lblGioHang.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblGioHang.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        rightPanel.add(lblGioHang, BorderLayout.NORTH);
-
-        String[] columnGioHang = {"Mã SP", "Tên SP", "SL", "Giá", "Thành Tiền"};
-        Object[][] dataGioHang = {}; // Giỏ hàng ban đầu trống
-        DefaultTableModel modelGioHang = new DefaultTableModel(dataGioHang, columnGioHang);
-        tableGioHang = new JTable(modelGioHang);
-        JScrollPane scrollGioHang = new JScrollPane(tableGioHang);
-        rightPanel.add(scrollGioHang, BorderLayout.CENTER);
-
-        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        lblTongTien = new JLabel("Tổng Tiền: 0 VND");
-        lblTongTien.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        totalPanel.add(lblTongTien);
-
-        JButton btnThanhToan = new JButton(" Thanh Toán");
-        btnThanhToan.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        btnThanhToan.addActionListener(e -> thanhToan());
-        totalPanel.add(btnThanhToan);
-
-        rightPanel.add(totalPanel, BorderLayout.SOUTH);
-
-        // Adding panels to the frame
         add(headerPanel, BorderLayout.NORTH);
-        add(leftPanel, BorderLayout.WEST);
-        add(rightPanel, BorderLayout.CENTER);
 
+        // Search Panel
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        txtSearch = new JTextField(20);
+        JButton btnSearch = createButton("🔍 Tìm kiếm");
+        btnSearch.addActionListener(e -> searchProduct());
+        searchPanel.add(new JLabel("Tìm kiếm:"));
+        searchPanel.add(txtSearch);
+        searchPanel.add(btnSearch);
+
+        // Product Table
+        String[] columnNamesSanPham = {"Mã SP", "Tên sản phẩm", "Giá", "Số lượng"};
+        tableModelSanPham = new DefaultTableModel(columnNamesSanPham, 0);
+        tableSanPham = new JTable(tableModelSanPham);
+        JScrollPane scrollPaneSanPham = new JScrollPane(tableSanPham);
+
+        JButton btnThemGioHang = createButton(" Thêm vào giỏ");
+        btnThemGioHang.addActionListener(e -> themVaoGioHang());
+
+        JPanel panelSanPham = new JPanel(new BorderLayout());
+        panelSanPham.add(searchPanel, BorderLayout.NORTH);
+        panelSanPham.add(scrollPaneSanPham, BorderLayout.CENTER);
+        panelSanPham.add(btnThemGioHang, BorderLayout.SOUTH);
+
+        // Cart Table (Giỏ hàng)
+        String[] columnNamesGioHang = {"Mã SP", "Tên sản phẩm", "Giá", "Số lượng", "Thành tiền"};
+        tableModelGioHang = new DefaultTableModel(columnNamesGioHang, 0);
+        tableGioHang = new JTable(tableModelGioHang);
+        JScrollPane scrollPaneGioHang = new JScrollPane(tableGioHang);
+
+        JButton btnXoaKhoiGio = createButton(" Xóa khỏi giỏ");
+        btnXoaKhoiGio.addActionListener(e -> xoaKhoiGioHang());
+
+        JPanel panelGioHang = new JPanel(new BorderLayout());
+        panelGioHang.add(new JLabel("Giỏ Hàng", SwingConstants.CENTER), BorderLayout.NORTH);
+        panelGioHang.add(scrollPaneGioHang, BorderLayout.CENTER);
+        panelGioHang.add(btnXoaKhoiGio, BorderLayout.SOUTH);
+
+        // Checkout Panel
+        JPanel checkoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        lblTongTien = new JLabel("Tổng tiền: 0 VND");
+        JButton btnThanhToan = createButton("💳 Thanh toán");
+        btnThanhToan.addActionListener(e -> thanhToan());
+
+        checkoutPanel.add(lblTongTien);
+        checkoutPanel.add(btnThanhToan);
+
+        // Main Content Panel
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelSanPham, panelGioHang);
+        splitPane.setDividerLocation(500);
+        add(splitPane, BorderLayout.CENTER);
+        add(checkoutPanel, BorderLayout.SOUTH);
+
+        // Load data
+        loadProductData();
         setVisible(true);
     }
 
-    private void themVaoGioHang() {
-        // Logic thêm sản phẩm từ tableSanPham vào tableGioHang
-        // Ví dụ: Lấy dòng được chọn từ tableSanPham, thêm vào model của tableGioHang
-        int selectedRow = tableSanPham.getSelectedRow();
-        if (selectedRow >= 0) {
-            DefaultTableModel modelSanPham = (DefaultTableModel) tableSanPham.getModel();
-            DefaultTableModel modelGioHang = (DefaultTableModel) tableGioHang.getModel();
+    private JButton createButton(String text) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setBackground(new Color(41, 128, 185));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        return button;
+    }
 
-            String maSP = modelSanPham.getValueAt(selectedRow, 0).toString();
-            String tenSP = modelSanPham.getValueAt(selectedRow, 1).toString();
-            int soLuong = 1; // Mặc định là 1 sản phẩm, có thể thêm logic nhập số lượng
-            String giaStr = modelSanPham.getValueAt(selectedRow, 3).toString();
-            double gia = Double.parseDouble(giaStr.replaceAll("[^\\d.]", "")); // Chuyển giá thành số
+    private void loadProductData() {
+        try {
+            List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
+            tableModelSanPham.setRowCount(0);
+            for (SanPhamDTO sp : productList) {
+                tableModelSanPham.addRow(new Object[]{
+                        sp.getMaSanPham(),
+                        sp.getTenSanPham(),
+                        sp.getGia(),
+                        sp.getSoLuong()
+                });
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
-            boolean daTonTai = false;
-            for (int i = 0; i < modelGioHang.getRowCount(); i++) {
-                if (modelGioHang.getValueAt(i, 0).equals(maSP)) {
-                    // Nếu sản phẩm đã tồn tại, tăng số lượng
-                    int soLuongHienTai = (int) modelGioHang.getValueAt(i, 2);
-                    modelGioHang.setValueAt(soLuongHienTai + 1, i, 2);
-                    modelGioHang.setValueAt((soLuongHienTai + 1) * gia, i, 4);
-                    daTonTai = true;
-                    break;
+    private void searchProduct() {
+        String keyword = txtSearch.getText().trim().toLowerCase();
+        try {
+            List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
+            tableModelSanPham.setRowCount(0);
+            for (SanPhamDTO sp : productList) {
+                if (sp.getTenSanPham().toLowerCase().contains(keyword)) {
+                    tableModelSanPham.addRow(new Object[]{
+                            sp.getMaSanPham(),
+                            sp.getTenSanPham(),
+                            sp.getGia(),
+                            sp.getSoLuong()
+                    });
                 }
             }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
-            if (!daTonTai) {
-                // Nếu sản phẩm chưa có, thêm dòng mới
-                modelGioHang.addRow(new Object[]{maSP, tenSP, soLuong, gia, soLuong * gia});
-            }
+    private void themVaoGioHang() {
+        int selectedRow = tableSanPham.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm!");
+            return;
+        }
 
+        String maSP = tableModelSanPham.getValueAt(selectedRow, 0).toString();
+        String tenSP = tableModelSanPham.getValueAt(selectedRow, 1).toString();
+        double gia = Double.parseDouble(tableModelSanPham.getValueAt(selectedRow, 2).toString());
+        int soLuong = Integer.parseInt(JOptionPane.showInputDialog("Nhập số lượng:"));
+
+        double thanhTien = gia * soLuong;
+        tableModelGioHang.addRow(new Object[]{maSP, tenSP, gia, soLuong, thanhTien});
+        capNhatTongTien();
+    }
+
+    private void xoaKhoiGioHang() {
+        int selectedRow = tableGioHang.getSelectedRow();
+        if (selectedRow >= 0) {
+            tableModelGioHang.removeRow(selectedRow);
             capNhatTongTien();
-        } else {
-            JOptionPane.showMessageDialog(this, "Hãy chọn một sản phẩm để thêm vào giỏ hàng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
     }
 
     private void capNhatTongTien() {
-        DefaultTableModel modelGioHang = (DefaultTableModel) tableGioHang.getModel();
         double tongTien = 0;
-        for (int i = 0; i < modelGioHang.getRowCount(); i++) {
-            tongTien += (double) modelGioHang.getValueAt(i, 4);
+        for (int i = 0; i < tableModelGioHang.getRowCount(); i++) {
+            tongTien += Double.parseDouble(tableModelGioHang.getValueAt(i, 4).toString());
         }
-        lblTongTien.setText(String.format("Tổng Tiền: %.0f VND", tongTien));
+        lblTongTien.setText("Tổng tiền: " + tongTien + " VND");
     }
 
     private void thanhToan() {
-        // Logic thanh toán giỏ hàng
-        JOptionPane.showMessageDialog(this, "Thanh toán thành công! Cảm ơn bạn đã mua hàng.");
-        ((DefaultTableModel) tableGioHang.getModel()).setRowCount(0); // Xóa giỏ hàng sau thanh toán
-        lblTongTien.setText("Tổng Tiền: 0 VND");
+        if (tableModelGioHang.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Giỏ hàng đang trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Hiển thị hóa đơn
+        StringBuilder hoaDon = new StringBuilder("HÓA ĐƠN\n\n");
+        hoaDon.append(String.format("%-15s %-20s %-10s %-10s %-10s\n", "Mã SP", "Tên SP", "Giá", "SL", "Thành tiền"));
+        hoaDon.append("--------------------------------------------------------------\n");
+
+        double tongTien = 0;
+        for (int i = 0; i < tableModelGioHang.getRowCount(); i++) {
+            String maSP = tableModelGioHang.getValueAt(i, 0).toString();
+            String tenSP = tableModelGioHang.getValueAt(i, 1).toString();
+            double gia = Double.parseDouble(tableModelGioHang.getValueAt(i, 2).toString());
+            int soLuong = Integer.parseInt(tableModelGioHang.getValueAt(i, 3).toString());
+            double thanhTien = gia * soLuong;
+
+            hoaDon.append(String.format("%-15s %-20s %-10.2f %-10d %-10.2f\n", maSP, tenSP, gia, soLuong, thanhTien));
+            tongTien += thanhTien;
+        }
+
+        hoaDon.append("\nTổng tiền: " + tongTien + " VND\n");
+        hoaDon.append("--------------------------------------------------------------\n");
+
+        // Chọn phương thức thanh toán
+        String[] phuongThuc = {"💵 Tiền mặt", "💳 Thẻ ngân hàng"};
+        String chonThanhToan = (String) JOptionPane.showInputDialog(
+                this,
+                hoaDon.toString() + "\nChọn phương thức thanh toán:",
+                "Thanh toán",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                phuongThuc,
+                phuongThuc[0]);
+
+        if (chonThanhToan != null) {
+            JOptionPane.showMessageDialog(this, "Thanh toán thành công bằng " + chonThanhToan + "!\nSố tiền: " + tongTien + " VND", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            tableModelGioHang.setRowCount(0); // Xóa giỏ hàng sau khi thanh toán
+            capNhatTongTien();
+        }
     }
+
 }
