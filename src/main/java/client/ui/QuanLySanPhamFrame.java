@@ -10,23 +10,25 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Comparator;
 
 public class QuanLySanPhamFrame extends JFrame {
-    private SanPhamService sanPhamService;
+    private final SanPhamService sanPhamService;
     private JTable tableSanPham;
     private DefaultTableModel tableModel;
+    private JTextField txtSearch;
+    private JComboBox<String> cboSort;
 
     public QuanLySanPhamFrame(SanPhamService sanPhamService) {
         this.sanPhamService = sanPhamService;
 
-        // Cấu hình cửa sổ chính
         setTitle("Quản lý sản phẩm");
-        setSize(900, 600);
+        setSize(1000, 650);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Tiêu đề
+        // Header Panel
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(new Color(52, 73, 94));
         JLabel lblHeader = new JLabel("Quản Lý Sản Phẩm", SwingConstants.CENTER);
@@ -35,7 +37,23 @@ public class QuanLySanPhamFrame extends JFrame {
         headerPanel.add(lblHeader, BorderLayout.CENTER);
         add(headerPanel, BorderLayout.NORTH);
 
-        // Bảng hiển thị sản phẩm
+        // Search & Sort Panel
+        JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        txtSearch = new JTextField(20);
+        JButton btnSearch = createButton("🔍 Tìm kiếm");
+        cboSort = new JComboBox<>(new String[]{"Sắp xếp theo", "Loại sản phẩm", "Giá tăng dần", "Giá giảm dần"});
+
+        btnSearch.addActionListener(e -> searchProduct());
+        cboSort.addActionListener(e -> sortProduct());
+
+        filterPanel.add(new JLabel("Tìm kiếm:"));
+        filterPanel.add(txtSearch);
+        filterPanel.add(btnSearch);
+        filterPanel.add(new JLabel("Sắp xếp:"));
+        filterPanel.add(cboSort);
+        add(filterPanel, BorderLayout.SOUTH);
+
+        // Product Table
         String[] columnNames = {"Mã SP", "Tên sản phẩm", "Loại sản phẩm", "Nhà cung cấp", "Giá", "Số lượng"};
         tableModel = new DefaultTableModel(columnNames, 0);
         tableSanPham = new JTable(tableModel);
@@ -48,11 +66,11 @@ public class QuanLySanPhamFrame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tableSanPham);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Panel nút thao tác
+        // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JButton btnAdd = createButton("Thêm");
-        JButton btnEdit = createButton("Sửa");
-        JButton btnDelete = createButton("Xóa");
+        JButton btnAdd = createButton(" Thêm");
+        JButton btnEdit = createButton(" Sửa");
+        JButton btnDelete = createButton(" Xóa");
 
         btnAdd.addActionListener(e -> addProduct());
         btnEdit.addActionListener(e -> editProduct());
@@ -61,11 +79,9 @@ public class QuanLySanPhamFrame extends JFrame {
         buttonPanel.add(btnAdd);
         buttonPanel.add(btnEdit);
         buttonPanel.add(btnDelete);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.NORTH);
 
-        // Tải dữ liệu sản phẩm lên bảng
         loadProductData();
-
         setVisible(true);
     }
 
@@ -81,23 +97,68 @@ public class QuanLySanPhamFrame extends JFrame {
     private void loadProductData() {
         try {
             List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
-            tableModel.setRowCount(0); // Xóa dữ liệu cũ
+            tableModel.setRowCount(0);
             for (SanPhamDTO sp : productList) {
-                Object[] row = {
+                tableModel.addRow(new Object[]{
                         sp.getMaSanPham(),
                         sp.getTenSanPham(),
                         sp.getMaLoaiSanPham(),
                         sp.getMaNhaCungCap(),
                         sp.getGia(),
                         sp.getSoLuong()
-                };
-                tableModel.addRow(row);
+                });
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
+    private void searchProduct() {
+        String keyword = txtSearch.getText().trim().toLowerCase();
+        try {
+            List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
+            tableModel.setRowCount(0);
+            for (SanPhamDTO sp : productList) {
+                if (sp.getTenSanPham().toLowerCase().contains(keyword)) {
+                    tableModel.addRow(new Object[]{
+                            sp.getMaSanPham(),
+                            sp.getTenSanPham(),
+                            sp.getMaLoaiSanPham(),
+                            sp.getMaNhaCungCap(),
+                            sp.getGia(),
+                            sp.getSoLuong()
+                    });
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sortProduct() {
+        String selectedSort = (String) cboSort.getSelectedItem();
+        try {
+            List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
+            if ("Giá tăng dần".equals(selectedSort)) {
+                productList.sort(Comparator.comparingDouble(SanPhamDTO::getGia));
+            } else if ("Giá giảm dần".equals(selectedSort)) {
+                productList.sort(Comparator.comparingDouble(SanPhamDTO::getGia).reversed());
+            }
+            tableModel.setRowCount(0);
+            for (SanPhamDTO sp : productList) {
+                tableModel.addRow(new Object[]{
+                        sp.getMaSanPham(),
+                        sp.getTenSanPham(),
+                        sp.getMaLoaiSanPham(),
+                        sp.getMaNhaCungCap(),
+                        sp.getGia(),
+                        sp.getSoLuong()
+                });
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
     private void addProduct() {
         try {
             // Lấy danh sách loại sản phẩm và nhà cung cấp từ server

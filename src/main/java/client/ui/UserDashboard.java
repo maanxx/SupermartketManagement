@@ -6,7 +6,6 @@ import shared.services.NhanVienService;
 import shared.services.SanPhamService;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class UserDashboard extends JFrame {
@@ -27,22 +26,25 @@ public class UserDashboard extends JFrame {
 
         // Sidebar menu
         JPanel sidebar = new JPanel();
-        sidebar.setLayout(new GridLayout(4, 1, 10, 10));
+        sidebar.setLayout(new GridLayout(5, 1, 10, 10));
         sidebar.setBackground(new Color(41, 128, 185));
         sidebar.setPreferredSize(new Dimension(220, 0));
 
         JButton btnBanHang = createSidebarButton(" Bán hàng");
         JButton btnSanPham = createSidebarButton(" Sản phẩm");
         JButton btnHoaDon = createSidebarButton(" Hóa đơn");
+        JButton btnThongTinCaNhan = createSidebarButton(" Thông tin cá nhân");
         JButton btnDangXuat = createSidebarButton(" Đăng xuất");
 
         btnBanHang.addActionListener(e -> openThanhToan());
         btnSanPham.addActionListener(e -> openQuanLySanPham());
+        btnThongTinCaNhan.addActionListener(e -> openThongTinCaNhan());
         btnDangXuat.addActionListener(e -> logout());
 
         sidebar.add(btnBanHang);
         sidebar.add(btnSanPham);
         sidebar.add(btnHoaDon);
+        sidebar.add(btnThongTinCaNhan);
         sidebar.add(btnDangXuat);
 
         // Header
@@ -55,29 +57,8 @@ public class UserDashboard extends JFrame {
         lblWelcome.setForeground(Color.WHITE);
         headerPanel.add(lblWelcome, BorderLayout.CENTER);
 
-        // Product table
-        String[] columnNames = {"Mã SP", "Tên sản phẩm", "Loại", "Giá", "Số lượng"};
-        Object[][] sampleData = {
-                {"SP01", "Gạo ST25", "Thực phẩm", "120.000", "50"},
-                {"SP02", "Thịt bò Úc", "Thực phẩm", "250.000", "30"},
-                {"SP03", "Bột giặt OMO", "Nhu yếu phẩm", "90.000", "40"},
-                {"SP04", "Nồi cơm điện", "Đồ gia dụng", "750.000", "10"}
-        };
-
-        DefaultTableModel tableModel = new DefaultTableModel(sampleData, columnNames);
-        JTable tableSanPham = new JTable(tableModel);
-        tableSanPham.setRowHeight(30);
-        tableSanPham.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        tableSanPham.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 16));
-        tableSanPham.getTableHeader().setBackground(new Color(41, 128, 185));
-        tableSanPham.getTableHeader().setForeground(Color.WHITE);
-        JScrollPane scrollPane = new JScrollPane(tableSanPham);
-
-        // Add components
         add(headerPanel, BorderLayout.NORTH);
         add(sidebar, BorderLayout.WEST);
-        add(scrollPane, BorderLayout.CENTER);
-
         setVisible(true);
     }
 
@@ -92,7 +73,6 @@ public class UserDashboard extends JFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(41, 128, 185));
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(52, 73, 94));
             }
@@ -100,10 +80,53 @@ public class UserDashboard extends JFrame {
         return button;
     }
 
+    private void openThongTinCaNhan() {
+        JDialog dialog = new JDialog(this, "Thông tin cá nhân", true);
+        dialog.setSize(400, 300);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(new GridLayout(6, 2, 10, 10));
+
+        dialog.add(new JLabel("Mã Nhân Viên:"));
+        dialog.add(new JLabel(loggedInNhanVien.getMaNhanVien()));
+        dialog.add(new JLabel("Họ Tên:"));
+        dialog.add(new JLabel(loggedInNhanVien.getHoTen()));
+        dialog.add(new JLabel("Số Điện Thoại:"));
+        dialog.add(new JLabel(loggedInNhanVien.getSoDienThoai()));
+        dialog.add(new JLabel("Chức Danh:"));
+        dialog.add(new JLabel(loggedInNhanVien.getChucDanh()));
+        dialog.add(new JLabel("Vai Trò:"));
+        dialog.add(new JLabel(loggedInNhanVien.getRole()));
+
+        JButton btnDoiMatKhau = new JButton("Đổi mật khẩu");
+        btnDoiMatKhau.addActionListener(e -> doiMatKhau());
+        dialog.add(new JLabel());
+        dialog.add(btnDoiMatKhau);
+
+        dialog.setVisible(true);
+    }
+
+    private void doiMatKhau() {
+        JPasswordField newPasswordField = new JPasswordField();
+        int option = JOptionPane.showConfirmDialog(this, newPasswordField, "Nhập mật khẩu mới", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String newPassword = new String(newPasswordField.getPassword()).trim();
+            if (newPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Mật khẩu không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                nhanVienService.updatePassword(loggedInNhanVien.getMaNhanVien(), newPassword);
+                JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi đổi mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
     private void openThanhToan() {
         JOptionPane.showMessageDialog(this, " Chức năng thanh toán hóa đơn sẽ được triển khai sau!");
     }
-
 
     private void openQuanLySanPham() {
         new QuanLySanPhamFrame(sanPhamService);
