@@ -38,6 +38,7 @@ public class UserDashboard extends JFrame {
 
         btnBanHang.addActionListener(e -> openBanHang());
         btnSanPham.addActionListener(e -> openQuanLySanPham());
+        btnHoaDon.addActionListener(e -> openQuanLyHoaDon());
         btnThongTinCaNhan.addActionListener(e -> openThongTinCaNhan());
         btnDangXuat.addActionListener(e -> logout());
 
@@ -126,6 +127,10 @@ public class UserDashboard extends JFrame {
 
     private void openBanHang() {
         new QuanLyBanHangFrame(sanPhamService);
+    }
+
+    private void openQuanLyHoaDon() {
+        new QuanLyHoaDonFrame();
     }
 
 

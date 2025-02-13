@@ -211,10 +211,16 @@ public class QuanLyBanHangFrame extends JFrame {
                 phuongThuc[0]);
 
         if (chonThanhToan != null) {
+            // Tạo mã hóa đơn ngẫu nhiên
+            String maHoaDon = "HD" + System.currentTimeMillis();
+            String ngayLap = java.time.LocalDate.now().toString();
+
+            // Lưu hóa đơn vào danh sách
+            QuanLyHoaDonFrame.luuHoaDon(maHoaDon, ngayLap, tongTien, chonThanhToan);
+
             JOptionPane.showMessageDialog(this, "Thanh toán thành công bằng " + chonThanhToan + "!\nSố tiền: " + tongTien + " VND", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             tableModelGioHang.setRowCount(0); // Xóa giỏ hàng sau khi thanh toán
             capNhatTongTien();
         }
     }
-
 }
