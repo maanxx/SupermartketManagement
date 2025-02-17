@@ -60,6 +60,7 @@ public class UserDashboard extends JFrame {
 
         add(headerPanel, BorderLayout.NORTH);
         add(sidebar, BorderLayout.WEST);
+        add(new ThongKeChartUserPanel(), BorderLayout.CENTER);
         setVisible(true);
     }
 
