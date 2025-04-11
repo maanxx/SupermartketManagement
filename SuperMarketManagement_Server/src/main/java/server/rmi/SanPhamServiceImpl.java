@@ -11,7 +11,9 @@ import shared.services.SanPhamService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SanPhamServiceImpl extends UnicastRemoteObject implements SanPhamService {
@@ -32,7 +34,9 @@ public class SanPhamServiceImpl extends UnicastRemoteObject implements SanPhamSe
                         sp.getNhaCungCap().getMaNhaCungCap(),
                         sp.getLoaiSanPham().getMaLoai(),
                         sp.getGia(),
-                        sp.getSoLuong()))
+                        sp.getSoLuong(),
+                        sp.getHinhAnh()
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -45,20 +49,22 @@ public class SanPhamServiceImpl extends UnicastRemoteObject implements SanPhamSe
                 sp.getNhaCungCap().getMaNhaCungCap(),
                 sp.getLoaiSanPham().getMaLoai(),
                 sp.getGia(),
-                sp.getSoLuong()) : null;
+                sp.getSoLuong(),
+                sp.getHinhAnh()
+        ) : null;
     }
 
     @Override
     public void addSanPham(SanPhamDTO sanPhamDTO) throws RemoteException {
-        SanPham sp = new SanPham(
-                sanPhamDTO.getMaSanPham(),
-                sanPhamDTO.getTenSanPham(),
-                nhaCungCapDAO.findById(sanPhamDTO.getMaNhaCungCap()),
-                loaiSanPhamDAO.findById(sanPhamDTO.getMaLoaiSanPham()),
-                null,
-                sanPhamDTO.getGia(),
-                sanPhamDTO.getSoLuong()
-        );
+        SanPham sp = new SanPham();
+        sp.setMaSanPham(sanPhamDTO.getMaSanPham());
+        sp.setTenSanPham(sanPhamDTO.getTenSanPham());
+        sp.setNhaCungCap(nhaCungCapDAO.findById(sanPhamDTO.getMaNhaCungCap()));
+        sp.setLoaiSanPham(loaiSanPhamDAO.findById(sanPhamDTO.getMaLoaiSanPham()));
+        sp.setGia(sanPhamDTO.getGia());
+        sp.setSoLuong(sanPhamDTO.getSoLuong());
+        sp.setHinhAnh(sanPhamDTO.getHinhAnh());
+
         sanPhamDAO.save(sp);
     }
 
@@ -71,9 +77,11 @@ public class SanPhamServiceImpl extends UnicastRemoteObject implements SanPhamSe
             sp.setLoaiSanPham(loaiSanPhamDAO.findById(sanPhamDTO.getMaLoaiSanPham()));
             sp.setGia(sanPhamDTO.getGia());
             sp.setSoLuong(sanPhamDTO.getSoLuong());
+            sp.setHinhAnh(sanPhamDTO.getHinhAnh());
             sanPhamDAO.update(sp);
         }
     }
+
 
     @Override
     public void deleteSanPham(String id) throws RemoteException {
@@ -105,5 +113,53 @@ public class SanPhamServiceImpl extends UnicastRemoteObject implements SanPhamSe
                 .map(ncc -> new NhaCungCapDTO(ncc.getMaNhaCungCap(), ncc.getTenNhaCungCap()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void uploadHinhAnh(String fileName, byte[] fileData) throws RemoteException {
+        try {
+            String folderPath = "src/main/resources/images/"; // Đường dẫn ảnh trong server
+            java.nio.file.Path imagePath = java.nio.file.Paths.get(folderPath + fileName);
+            java.nio.file.Files.write(imagePath, fileData);
+            System.out.println("📸 Ảnh đã được lưu tại: " + imagePath.toAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RemoteException(" Lỗi khi lưu ảnh", e);
+        }
+    }
+
+    @Override
+    public byte[] downloadHinhAnh(String fileName) throws RemoteException {
+        try {
+            String folderPath = "src/main/resources/images/";
+            java.nio.file.Path imagePath = java.nio.file.Paths.get(folderPath + fileName);
+            return java.nio.file.Files.readAllBytes(imagePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RemoteException(" Lỗi khi đọc ảnh từ server", e);
+        }
+    }
+
+    @Override
+    public int getSanPhamMoiTheoThang(String thang) throws RemoteException {
+        return (int) sanPhamDAO.findAll().stream()
+                .filter(sp -> sp.getNgayTao() != null && String.format("%02d", sp.getNgayTao().getMonthValue()).equals(thang))
+                .count();
+    }
+
+    @Override
+    public Map<String, Integer> getThongKeSoLuongTheoLoai() throws RemoteException {
+        List<SanPham> list = sanPhamDAO.findAll();
+        Map<String, Integer> result = new HashMap<>();
+
+        for (SanPham sp : list) {
+            if (sp.getLoaiSanPham() != null && sp.getLoaiSanPham().getTenLoai() != null) {
+                String tenLoai = sp.getLoaiSanPham().getTenLoai();
+                result.put(tenLoai, result.getOrDefault(tenLoai, 0) + 1);
+            }
+        }
+
+        return result;
+    }
+
 
 }

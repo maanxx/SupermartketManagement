@@ -16,4 +16,5 @@ public class SanPhamDTO implements Serializable {
     private String maLoaiSanPham;
     private Double gia;
     private Integer soLuong;
+    private String hinhAnh;
 }

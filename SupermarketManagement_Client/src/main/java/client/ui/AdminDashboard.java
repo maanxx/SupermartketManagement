@@ -22,7 +22,7 @@ public class AdminDashboard extends JFrame {
         this.nhanVienService = nhanVienService;
         this.sanPhamService = MainClient.getSanPhamService();
 
-        setTitle("🛠 Admin Dashboard - " + nhanVien.getHoTen());
+        setTitle("Admin Dashboard - " + nhanVien.getHoTen());
         setSize(1100, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -39,7 +39,14 @@ public class AdminDashboard extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         mainPanel.setOpaque(false);
-        mainPanel.add(new ThongKeChartAdminPanel(), "DASHBOARD");
+        mainPanel.add(
+                new ThongKeChartAdminPanel(
+                        MainClient.getHoaDonService(),
+                        sanPhamService,
+                        nhanVienService
+                ),
+                "DASHBOARD"
+        );
         add(mainPanel, BorderLayout.CENTER);
 
         setVisible(true);

@@ -150,14 +150,13 @@ public class QuanLyBanHangFrame extends JFrame {
         lblTongTien = new JLabel("Tổng Tiền: 0 VND");
         lblTongTien.setFont(new Font("Segoe UI", Font.BOLD, 18));
         lblTongTien.setForeground(new Color(67, 99, 235));
-        JButton btnThanhToan = createAnimatedButton("💳 Thanh Toán");
+        JButton btnThanhToan = createAnimatedButton(" Thanh Toán");
         btnThanhToan.addActionListener(e -> thanhToan());
         checkoutPanel.add(lblTongTien);
         checkoutPanel.add(btnThanhToan);
         contentPanel.add(checkoutPanel, BorderLayout.SOUTH);
 
         // Animation khi mở frame
-        setOpacity(0f);
         setVisible(true);
         Timer fadeInTimer = new Timer(20, new ActionListener() {
             float opacity = 0f;
@@ -165,7 +164,6 @@ public class QuanLyBanHangFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 opacity += 0.05f;
-                setOpacity(Math.min(opacity, 1f));
                 if (opacity >= 1f) ((Timer) e.getSource()).stop();
             }
         });
@@ -182,6 +180,7 @@ public class QuanLyBanHangFrame extends JFrame {
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2d.setColor(getBackground());
                 g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
+                super.paintComponent(g);
             }
         };
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));

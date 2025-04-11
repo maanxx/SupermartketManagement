@@ -95,4 +95,18 @@ public class NhanVienServiceImpl extends UnicastRemoteObject implements NhanVien
                 nv.getRole()
         );
     }
+    @Override
+    public int getNhanVienMoiTheoThang(String thang) throws RemoteException {
+        List<NhanVien> list = nhanVienDAO.findAll();
+        return (int) list.stream()
+                .filter(nv -> {
+                    String ngaySinh = nv.getNgaySinh();
+                    if (ngaySinh != null && ngaySinh.length() >= 7) {
+                        String thangSinh = ngaySinh.substring(5, 7);
+                        return thangSinh.equals(thang);
+                    }
+                    return false;
+                })
+                .count();
+    }
 }

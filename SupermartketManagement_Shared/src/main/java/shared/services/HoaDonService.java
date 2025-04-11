@@ -11,4 +11,6 @@ public interface HoaDonService extends Remote {
     void addHoaDon(HoaDonDTO hoaDon) throws RemoteException;
     void updateHoaDon(HoaDonDTO hoaDon) throws RemoteException;
     void deleteHoaDon(String id) throws RemoteException;
+    int getTongDoanhThu() throws RemoteException;
+    int getSoLuongDonHang() throws RemoteException;
 }
