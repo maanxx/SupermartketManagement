@@ -16,7 +16,7 @@ public class MainClient {
     public static void main(String[] args) {
         try {
             // Mở cmd -> gõ ipconfig -> địa chỉ ipv4
-            String serverIp = "192.168.99.135";
+            String serverIp = "192.168.1.9";
             int port = 1099;
             Registry registry = LocateRegistry.getRegistry(serverIp, port);
 

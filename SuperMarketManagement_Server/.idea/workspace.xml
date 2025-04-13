@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="" />
+    <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,18 +26,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "huutai243"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;huutai243&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/maanxx/SupermartketManagement.git",
-    "accountId": "85a67026-7c69-4880-8cba-8ec33b2a159c"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/maanxx/SupermartketManagement.git&quot;,
+    &quot;accountId&quot;: &quot;85a67026-7c69-4880-8cba-8ec33b2a159c&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -39,9 +45,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2vJAkn28JIgIT2ZO8JXjExCLfUk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -50,24 +56,33 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.MainServer.executor": "Run",
-    "Application.SeedDataMain.executor": "Debug",
+    "Application.SeedDataMain.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "man",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/SupermartketManagement",
+    "last_opened_file_path": "D:/SupermartketManagement/SupermarketManagement_Client",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.40114942",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="RunManager" selected="Application.MainServer">
     <configuration name="MainServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server.MainServer" />
-      <module name="SuperMarket_Server" />
+      <module name="SuperMarketManagement_Server" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="server.*" />
@@ -80,7 +95,7 @@
     </configuration>
     <configuration name="SeedDataMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server.SeedDataMain" />
-      <module name="SuperMarket_Server" />
+      <module name="SuperMarketManagement_Server" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="server.*" />
@@ -115,6 +130,8 @@
       <option name="presentableId" value="Default" />
       <updated>1743853159689</updated>
       <workItem from="1743853160886" duration="6893000" />
+      <workItem from="1744373329884" duration="126000" />
+      <workItem from="1744373502988" duration="3894000" />
     </task>
     <servers />
   </component>
