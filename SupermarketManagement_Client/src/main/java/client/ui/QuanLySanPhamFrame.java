@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.File;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.Comparator;
 import java.util.List;
@@ -31,11 +33,7 @@ public class QuanLySanPhamFrame extends JFrame {
         setLayout(new BorderLayout(10, 10));
         setResizable(false);
 
-        // Header Panel với gradient nền
-//        JPanel headerPanel = new GradientHeaderPanel("Quản Lý Sản Phẩm");
-//        headerPanel.setPreferredSize(new Dimension(1000, 80));
-//        add(headerPanel, BorderLayout.NORTH);
-        setTitle("Sản pham");
+        setTitle("Sản phẩm");
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(Color.WHITE);
@@ -64,7 +62,7 @@ public class QuanLySanPhamFrame extends JFrame {
 
         centerPanel.add(filterPanel, BorderLayout.NORTH);
 
-        String[] columnNames = {"Mã SP", "Tên sản phẩm", "Loại sản phẩm", "Nhà cung cấp", "Giá", "Số lượng"};
+        String[] columnNames = {"Hình ảnh", "Mã SP", "Tên sản phẩm", "Loại", "Nhà cung cấp", "Giá", "Số lượng"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -72,16 +70,25 @@ public class QuanLySanPhamFrame extends JFrame {
             }
         };
         tableSanPham = new JTable(tableModel);
-        tableSanPham.setRowHeight(30);
+        tableSanPham.setRowHeight(65);
         tableSanPham.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         tableSanPham.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         tableSanPham.getTableHeader().setBackground(new Color(41, 128, 185));
         tableSanPham.getTableHeader().setForeground(Color.WHITE);
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tableSanPham.getColumnCount(); i++) {
-            tableSanPham.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
+
+        // Custom renderer cho cột ảnh
+        tableSanPham.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel lbl = new JLabel();
+                lbl.setHorizontalAlignment(JLabel.CENTER);
+                if (value instanceof ImageIcon) {
+                    lbl.setIcon((ImageIcon) value);
+                }
+                return lbl;
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(tableSanPham);
         scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         centerPanel.add(scrollPane, BorderLayout.CENTER);
@@ -127,10 +134,40 @@ public class QuanLySanPhamFrame extends JFrame {
 
     private void loadProductData() {
         try {
+            // Tạo thư mục client_images nếu chưa có
+            File imageFolder = new File("client_images");
+            if (!imageFolder.exists()) {
+                imageFolder.mkdir();
+            }
+
             List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
             tableModel.setRowCount(0);
+
             for (SanPhamDTO sp : productList) {
+                ImageIcon icon = null;
+                String fileName = sp.getHinhAnh();
+                File localImgFile = new File("client_images/" + fileName);
+
+                //  Nếu ảnh chưa có thì tải từ server
+                if (!localImgFile.exists() && fileName != null && !fileName.isEmpty()) {
+                    try {
+                        byte[] imageBytes = sanPhamService.downloadHinhAnh(fileName);
+                        java.nio.file.Files.write(localImgFile.toPath(), imageBytes);
+                    } catch (Exception e) {
+                        System.err.println(" Không thể tải ảnh: " + fileName);
+                    }
+                }
+
+                //  Tạo icon nếu có ảnh
+                if (localImgFile.exists()) {
+                    ImageIcon originalIcon = new ImageIcon(localImgFile.getAbsolutePath());
+                    Image scaledImg = originalIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                    icon = new ImageIcon(scaledImg);
+                }
+
+                // Thêm dòng vào bảng
                 tableModel.addRow(new Object[]{
+                        icon,
                         sp.getMaSanPham(),
                         sp.getTenSanPham(),
                         sp.getMaLoaiSanPham(),
@@ -144,6 +181,7 @@ public class QuanLySanPhamFrame extends JFrame {
         }
     }
 
+
     private void searchProduct() {
         String keyword = txtSearch.getText().trim().toLowerCase();
         try {
@@ -151,7 +189,9 @@ public class QuanLySanPhamFrame extends JFrame {
             tableModel.setRowCount(0);
             for (SanPhamDTO sp : productList) {
                 if (sp.getTenSanPham().toLowerCase().contains(keyword)) {
+                    ImageIcon icon = loadImageIcon(sp.getHinhAnh());
                     tableModel.addRow(new Object[]{
+                            icon,
                             sp.getMaSanPham(),
                             sp.getTenSanPham(),
                             sp.getMaLoaiSanPham(),
@@ -166,6 +206,7 @@ public class QuanLySanPhamFrame extends JFrame {
         }
     }
 
+
     private void sortProduct() {
         String selectedSort = (String) cboSort.getSelectedItem();
         try {
@@ -177,7 +218,9 @@ public class QuanLySanPhamFrame extends JFrame {
             }
             tableModel.setRowCount(0);
             for (SanPhamDTO sp : productList) {
+                ImageIcon icon = loadImageIcon(sp.getHinhAnh());
                 tableModel.addRow(new Object[]{
+                        icon,
                         sp.getMaSanPham(),
                         sp.getTenSanPham(),
                         sp.getMaLoaiSanPham(),
@@ -190,6 +233,7 @@ public class QuanLySanPhamFrame extends JFrame {
             e.printStackTrace();
         }
     }
+
 
     private void addProduct() {
         try {
@@ -210,6 +254,25 @@ public class QuanLySanPhamFrame extends JFrame {
             JTextField txtTenSP = new JTextField();
             JTextField txtGia = new JTextField();
             JTextField txtSoLuong = new JTextField();
+            JButton btnChonAnh = new JButton("Chọn ảnh");
+            JLabel lblTenAnh = new JLabel("Chưa chọn ảnh");
+            final byte[][] imageData = new byte[1][];
+            final String[] imageFileName = new String[1];
+
+            btnChonAnh.addActionListener(e -> {
+                JFileChooser chooser = new JFileChooser();
+                int result = chooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = chooser.getSelectedFile();
+                    lblTenAnh.setText(selectedFile.getName());
+                    imageFileName[0] = selectedFile.getName();
+                    try {
+                        imageData[0] = java.nio.file.Files.readAllBytes(selectedFile.toPath());
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Lỗi đọc ảnh: " + ex.getMessage());
+                    }
+                }
+            });
 
             Object[] fields = {
                     "Mã sản phẩm:", txtMaSP,
@@ -217,7 +280,8 @@ public class QuanLySanPhamFrame extends JFrame {
                     "Loại sản phẩm:", cboLoaiSanPham,
                     "Nhà cung cấp:", cboNhaCungCap,
                     "Giá:", txtGia,
-                    "Số lượng:", txtSoLuong
+                    "Số lượng:", txtSoLuong,
+                    btnChonAnh, lblTenAnh
             };
 
             int option = JOptionPane.showConfirmDialog(this, fields, "Thêm sản phẩm mới", JOptionPane.OK_CANCEL_OPTION);
@@ -233,9 +297,13 @@ public class QuanLySanPhamFrame extends JFrame {
                             maNhaCungCap,
                             maLoai,
                             Double.parseDouble(txtGia.getText()),
-                            Integer.parseInt(txtSoLuong.getText())
+                            Integer.parseInt(txtSoLuong.getText()),
+                            imageFileName[0] // tên ảnh
                     );
                     sanPhamService.addSanPham(newProduct);
+                    if (imageData[0] != null && imageFileName[0] != null) {
+                        sanPhamService.uploadHinhAnh(imageFileName[0], imageData[0]);
+                    }
                     loadProductData();
                 } else {
                     JOptionPane.showMessageDialog(this, "Vui lòng chọn loại sản phẩm và nhà cung cấp hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -246,27 +314,52 @@ public class QuanLySanPhamFrame extends JFrame {
         }
     }
 
+
     private void editProduct() {
         int selectedRow = tableSanPham.getSelectedRow();
         if (selectedRow < 0) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm để sửa!");
             return;
         }
-        String maSP = tableModel.getValueAt(selectedRow, 0).toString();
+        String maSP = tableModel.getValueAt(selectedRow, 1).toString();
         try {
             SanPhamDTO product = sanPhamService.getSanPhamById(maSP);
+
             JTextField txtTenSP = new JTextField(product.getTenSanPham());
             JTextField txtLoai = new JTextField(product.getMaLoaiSanPham());
             JTextField txtNhaCungCap = new JTextField(product.getMaNhaCungCap());
             JTextField txtGia = new JTextField(String.valueOf(product.getGia()));
             JTextField txtSoLuong = new JTextField(String.valueOf(product.getSoLuong()));
+
+            JButton btnChonAnh = new JButton("Chọn ảnh mới");
+            JLabel lblTenAnh = new JLabel(product.getHinhAnh() != null ? product.getHinhAnh() : "Chưa có ảnh");
+            final byte[][] imageData = new byte[1][];
+            final String[] imageFileName = new String[]{product.getHinhAnh()};
+
+            btnChonAnh.addActionListener(e -> {
+                JFileChooser chooser = new JFileChooser();
+                int result = chooser.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = chooser.getSelectedFile();
+                    lblTenAnh.setText(selectedFile.getName());
+                    imageFileName[0] = selectedFile.getName();
+                    try {
+                        imageData[0] = java.nio.file.Files.readAllBytes(selectedFile.toPath());
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Lỗi đọc ảnh: " + ex.getMessage());
+                    }
+                }
+            });
+
             Object[] fields = {
                     "Tên sản phẩm:", txtTenSP,
                     "Loại sản phẩm:", txtLoai,
                     "Nhà cung cấp:", txtNhaCungCap,
                     "Giá:", txtGia,
-                    "Số lượng:", txtSoLuong
+                    "Số lượng:", txtSoLuong,
+                    btnChonAnh, lblTenAnh
             };
+
             int option = JOptionPane.showConfirmDialog(this, fields, "Sửa sản phẩm", JOptionPane.OK_CANCEL_OPTION);
             if (option == JOptionPane.OK_OPTION) {
                 product.setTenSanPham(txtTenSP.getText());
@@ -274,7 +367,12 @@ public class QuanLySanPhamFrame extends JFrame {
                 product.setMaNhaCungCap(txtNhaCungCap.getText());
                 product.setGia(Double.parseDouble(txtGia.getText()));
                 product.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
+                product.setHinhAnh(imageFileName[0]);
+
                 sanPhamService.updateSanPham(product);
+                if (imageData[0] != null && imageFileName[0] != null) {
+                    sanPhamService.uploadHinhAnh(imageFileName[0], imageData[0]);
+                }
                 loadProductData();
             }
         } catch (RemoteException e) {
@@ -282,13 +380,14 @@ public class QuanLySanPhamFrame extends JFrame {
         }
     }
 
+
     private void deleteProduct() {
         int selectedRow = tableSanPham.getSelectedRow();
         if (selectedRow < 0) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm để xóa!");
             return;
         }
-        String maSP = tableModel.getValueAt(selectedRow, 0).toString();
+        String maSP = tableModel.getValueAt(selectedRow, 1).toString();
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa sản phẩm này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
@@ -299,4 +398,25 @@ public class QuanLySanPhamFrame extends JFrame {
             }
         }
     }
+    private ImageIcon loadImageIcon(String fileName) {
+        if (fileName == null || fileName.isEmpty()) return null;
+        File localImgFile = new File("client_images/" + fileName);
+
+        // Nếu ảnh chưa tồn tại → tải từ server
+        if (!localImgFile.exists()) {
+            try {
+                byte[] imageBytes = sanPhamService.downloadHinhAnh(fileName);
+                java.nio.file.Files.write(localImgFile.toPath(), imageBytes);
+            } catch (Exception e) {
+                System.err.println("❌ Không thể tải ảnh từ server: " + fileName);
+                return null;
+            }
+        }
+
+        // Tạo và resize ImageIcon
+        ImageIcon originalIcon = new ImageIcon(localImgFile.getAbsolutePath());
+        Image scaledImg = originalIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImg);
+    }
+
 }

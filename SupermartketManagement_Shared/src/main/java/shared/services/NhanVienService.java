@@ -13,4 +13,5 @@ public interface NhanVienService extends Remote {
     void addNhanVien(NhanVienDTO nhanVien) throws RemoteException;
     void updateNhanVien(NhanVienDTO nhanVien) throws RemoteException;
     void deleteNhanVien(String id) throws RemoteException;
+    int getNhanVienMoiTheoThang(String thang) throws RemoteException;
 }

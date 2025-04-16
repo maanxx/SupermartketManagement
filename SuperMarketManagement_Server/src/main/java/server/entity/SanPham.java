@@ -3,12 +3,13 @@ package server.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "SanPham")
-@Data
-@ToString(exclude = { "chiTietHoaDons", "nhaCungCap", "loaiSanPham" })
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,7 +35,25 @@ public class SanPham {
     @Column(name = "gia")
     private Double gia;
 
+    @Column(name = "hinhAnh")
+    private String hinhAnh;
+
     @Column(name = "soLuong")
     private Integer soLuong;
-}
 
+    @Setter
+    @Getter
+    @Column(name = "ngayTao")
+    private LocalDate ngayTao;
+
+    public SanPham(String maSanPham, String tenSanPham, NhaCungCap nhaCungCap, LoaiSanPham loaiSanPham, Double gia, Integer soLuong, String hinhAnh) {
+        this.maSanPham = maSanPham;
+        this.tenSanPham = tenSanPham;
+        this.nhaCungCap = nhaCungCap;
+        this.loaiSanPham = loaiSanPham;
+        this.gia = gia;
+        this.soLuong = soLuong;
+        this.hinhAnh = hinhAnh;
+    }
+
+}

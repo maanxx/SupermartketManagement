@@ -60,7 +60,7 @@ public class UserDashboard extends JFrame {
 
         add(headerPanel, BorderLayout.NORTH);
         add(sidebar, BorderLayout.WEST);
-        add(new ThongKeChartUserPanel(), BorderLayout.CENTER);
+        add(new ThongKeChartUserPanel(MainClient.getHoaDonService(), MainClient.getSanPhamService()), BorderLayout.CENTER);
         setVisible(true);
     }
 
@@ -136,7 +136,7 @@ public class UserDashboard extends JFrame {
 
 
     private void openQuanLySanPham() {
-        new QuanLySanPhamFrame(sanPhamService);
+        new QuanLySanPhamUserFrame(sanPhamService);
     }
 
     private void logout() {

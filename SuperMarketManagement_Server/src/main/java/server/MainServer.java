@@ -4,7 +4,6 @@ import server.rmi.HoaDonServiceImpl;
 import server.rmi.NhanVienServiceImpl;
 import server.rmi.SanPhamServiceImpl;
 import server.rmi.KhachHangServiceImpl;
-import shared.services.*;
 
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;

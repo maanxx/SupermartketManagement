@@ -1,21 +1,58 @@
 package client.ui;
 
+import shared.services.HoaDonService;
+import shared.services.NhanVienService;
+import shared.services.SanPhamService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Arc2D;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
+import java.util.Map;
 
 public class ThongKeChartAdminPanel extends JPanel {
+    private final HoaDonService hoaDonService;
+    private final SanPhamService sanPhamService;
+    private final NhanVienService nhanVienService;
 
-    // Dữ liệu mẫu cho thống kê của Admin
-    private String[] pieCategories = {"Điện thoại", "Máy tính", "Tivi", "Phụ kiện"};
-    private double[] pieValues = {40, 30, 20, 10}; // giá trị mẫu
-    private String[] categories = {"Doanh thu", "Đơn hàng", "NV mới", "SP mới"};
-    private int[] values = {150, 80, 10, 25};
+    private int tongDoanhThu;
+    private int tongDonHang;
+    private int soNhanVienMoi;
+    private int soSanPhamMoi;
 
-    public ThongKeChartAdminPanel() {
+    private String[] pieCategories;
+    private double[] pieValues;
+    private String[] barCategories = {"Doanh thu", "Đơn hàng", "NV mới", "SP mới"};
+    private int[] barValues;
+
+    public ThongKeChartAdminPanel(HoaDonService hoaDonService, SanPhamService sanPhamService, NhanVienService nhanVienService) {
+        this.hoaDonService = hoaDonService;
+        this.sanPhamService = sanPhamService;
+        this.nhanVienService = nhanVienService;
         setPreferredSize(new Dimension(800, 500));
         setBackground(Color.WHITE);
+        fetchData();
+    }
+
+    private void fetchData() {
+        try {
+            tongDoanhThu = hoaDonService.getTongDoanhThu();
+            tongDonHang = hoaDonService.getSoLuongDonHang();
+            soNhanVienMoi = nhanVienService.getNhanVienMoiTheoThang("04");
+            soSanPhamMoi = sanPhamService.getSanPhamMoiTheoThang("04");
+            barValues = new int[]{tongDoanhThu, tongDonHang, soNhanVienMoi, soSanPhamMoi};
+
+            Map<String, Integer> thongKeLoai = sanPhamService.getThongKeSoLuongTheoLoai();
+            pieCategories = thongKeLoai.keySet().toArray(new String[0]);
+            pieValues = new double[thongKeLoai.size()];
+            int index = 0;
+            for (String key : thongKeLoai.keySet()) {
+                pieValues[index++] = thongKeLoai.get(key);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -49,7 +86,12 @@ public class ThongKeChartAdminPanel extends JPanel {
 
     private void drawSummaryMetrics(Graphics2D g2, int panelWidth, int panelHeight) {
         String[] labels = {"Tổng doanh thu", "Tổng đơn hàng", "NV mới", "SP mới"};
-        String[] data = {"1,500,000 VND", "120", "15", "30"};
+        String[] data = {
+                String.format("%,d VND", tongDoanhThu),
+                String.valueOf(tongDonHang),
+                String.valueOf(soNhanVienMoi),
+                String.valueOf(soSanPhamMoi)
+        };
         int numBoxes = labels.length;
         int boxWidth = (panelWidth - 40) / numBoxes;
         int boxHeight = panelHeight - 20;
@@ -73,7 +115,6 @@ public class ThongKeChartAdminPanel extends JPanel {
         }
     }
 
-    // Vẽ Bar Chart
     private void drawBarChart(Graphics2D g2, int startX, int startY, int areaWidth, int areaHeight) {
         int marginLeft = 40;
         int marginRight = 20;
@@ -88,12 +129,12 @@ public class ThongKeChartAdminPanel extends JPanel {
         g2.drawRect(startX + marginLeft, startY + marginTop, chartWidth, chartHeight);
 
         int maxValue = 0;
-        for (int v : values) {
+        for (int v : barValues) {
             if (v > maxValue) maxValue = v;
         }
         maxValue = (int)(maxValue * 1.2);
 
-        int n = categories.length;
+        int n = barCategories.length;
         int gap = 10;
         int barWidth = (chartWidth - gap * (n + 1)) / n;
         Font labelFont = new Font("Segoe UI", Font.PLAIN, 12);
@@ -101,7 +142,7 @@ public class ThongKeChartAdminPanel extends JPanel {
         FontMetrics fm = g2.getFontMetrics();
 
         for (int i = 0; i < n; i++) {
-            int barHeight = (int)(((double) values[i] / maxValue) * chartHeight);
+            int barHeight = (int)(((double) barValues[i] / maxValue) * chartHeight);
             int x = startX + marginLeft + gap + i * (barWidth + gap);
             int y = startY + marginTop + chartHeight - barHeight;
 
@@ -111,23 +152,20 @@ public class ThongKeChartAdminPanel extends JPanel {
             g2.setColor(Color.DARK_GRAY);
             g2.drawRect(x, y, barWidth, barHeight);
 
-            // Nhãn trục X
-            String category = categories[i];
+            String category = barCategories[i];
             int labelWidth = fm.stringWidth(category);
             int labelX = x + (barWidth - labelWidth) / 2;
             int labelY = startY + marginTop + chartHeight + fm.getAscent() + 2;
             g2.setColor(Color.BLACK);
             g2.drawString(category, labelX, labelY);
 
-            // Giá trị trên cột
-            String valueStr = String.valueOf(values[i]);
+            String valueStr = String.valueOf(barValues[i]);
             int valueWidth = fm.stringWidth(valueStr);
             int valueX = x + (barWidth - valueWidth) / 2;
             int valueY = y - 5;
             g2.drawString(valueStr, valueX, valueY);
         }
 
-        // Nhãn trục Y
         g2.setColor(Color.BLACK);
         int numYLabels = 5;
         for (int i = 0; i <= numYLabels; i++) {
@@ -139,7 +177,6 @@ public class ThongKeChartAdminPanel extends JPanel {
             g2.drawString(yLabel, startX + marginLeft - labelWidth - 10, labelY + fm.getAscent()/2 - 2);
         }
 
-        // Vẽ trục X và Y
         g2.drawLine(startX + marginLeft, startY + marginTop, startX + marginLeft, startY + marginTop + chartHeight);
         g2.drawLine(startX + marginLeft, startY + marginTop + chartHeight, startX + marginLeft + chartWidth, startY + marginTop + chartHeight);
 
@@ -178,15 +215,13 @@ public class ThongKeChartAdminPanel extends JPanel {
             startAngle += angle;
         }
 
-        // Tiêu đề Pie Chart
         g2.setColor(Color.BLACK);
         g2.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        String title = "Phân bố doanh số theo danh mục";
+        String title = "Phân bố sản phẩm theo loại";
         FontMetrics fm = g2.getFontMetrics();
         int titleWidth = fm.stringWidth(title);
         g2.drawString(title, startX + (areaWidth - titleWidth) / 2, startY + 30);
 
-        // Legend cho Pie Chart
         int legendX = x + diameter + 20;
         int legendY = y;
         g2.setFont(new Font("Segoe UI", Font.PLAIN, 14));

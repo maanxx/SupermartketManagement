@@ -76,4 +76,15 @@ public class HoaDonServiceImpl extends UnicastRemoteObject implements HoaDonServ
             hoaDonDAO.delete(hd);
         }
     }
+
+    @Override
+    public int getTongDoanhThu() throws RemoteException {
+        List<HoaDon> list = hoaDonDAO.findAll();
+        return list.stream().mapToInt(hd -> (int) hd.getTongTien()).sum();
+    }
+
+    @Override
+    public int getSoLuongDonHang() throws RemoteException {
+        return hoaDonDAO.findAll().size();
+    }
 }
