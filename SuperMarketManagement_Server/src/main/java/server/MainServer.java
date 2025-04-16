@@ -13,7 +13,7 @@ public class MainServer {
     public static void main(String[] args) {
         try {
             // Mở cmd -> gõ ipconfig -> địa chỉ ipv4
-            String serverIp = "192.168.1.9";
+            String serverIp = "172.16.0.77";
             int port = 1099;
 
             System.setProperty("java.rmi.server.hostname", serverIp);

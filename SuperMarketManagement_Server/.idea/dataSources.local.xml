@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="IU-243.26053.27">
-    <data-source name="SupermarketManagement@localhost" uuid="e0b30ecc-aed3-465c-9157-c4ab8f3f9c44">
+    <data-source name="SupermarketManagement@localhost" uuid="30a1ad39-cfde-4599-bb5e-c9fbafd4dbf8">
       <database-info product="MySQL" version="11.2.6-MariaDB" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)" dbms="MARIADB" exact-version="11.2.6" exact-driver-version="8.2">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>

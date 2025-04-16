@@ -5,11 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/ImgFront.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/back.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/box.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/buy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/calendar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/cart.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/customer.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/employee.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/eye_password.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/home-page.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/invoice.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/money.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/plus.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/setting.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/user.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e0b30ecc-aed3-465c-9157-c4ab8f3f9c44.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e0b30ecc-aed3-465c-9157-c4ab8f3f9c44/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e0b30ecc-aed3-465c-9157-c4ab8f3f9c44/storage_v2/_src_/schema/supermarketmanagement.-gqfaw.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/LoginFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,32 +73,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.MainServer.executor": "Run",
-    "Application.SeedDataMain.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "man",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/SupermartketManagement/SupermarketManagement_Client",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.40114942",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MainServer.executor&quot;: &quot;Run&quot;,
+    &quot;Application.SeedDataMain.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;man&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/SupermartketManagement/SuperMarketManagement_Server&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.40114942&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.MainServer">
     <configuration name="MainServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server.MainServer" />
@@ -132,6 +152,9 @@
       <workItem from="1743853160886" duration="6893000" />
       <workItem from="1744373329884" duration="126000" />
       <workItem from="1744373502988" duration="3894000" />
+      <workItem from="1744562160840" duration="3211000" />
+      <workItem from="1744732204288" duration="3043000" />
+      <workItem from="1744791278045" duration="3859000" />
     </task>
     <servers />
   </component>
