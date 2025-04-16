@@ -5,31 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/ImgFront.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/back.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/background.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/box.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/buy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/calendar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/cart.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/customer.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/employee.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/eye_password.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/home-page.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/invoice.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/money.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/plus.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/setting.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/user.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e0b30ecc-aed3-465c-9157-c4ab8f3f9c44.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e0b30ecc-aed3-465c-9157-c4ab8f3f9c44/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e0b30ecc-aed3-465c-9157-c4ab8f3f9c44/storage_v2/_src_/schema/supermarketmanagement.-gqfaw.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/LoginFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +75,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="Application.MainServer">
+  <component name="RunManager" selected="Application.SeedDataMain">
     <configuration name="MainServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server.MainServer" />
       <module name="SuperMarketManagement_Server" />
@@ -128,8 +104,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MainServer" />
         <item itemvalue="Application.SeedDataMain" />
+        <item itemvalue="Application.MainServer" />
       </list>
     </recent_temporary>
   </component>
@@ -155,6 +131,7 @@
       <workItem from="1744562160840" duration="3211000" />
       <workItem from="1744732204288" duration="3043000" />
       <workItem from="1744791278045" duration="3859000" />
+      <workItem from="1744820186045" duration="221000" />
     </task>
     <servers />
   </component>
