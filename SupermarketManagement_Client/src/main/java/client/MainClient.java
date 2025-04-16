@@ -1,6 +1,8 @@
 package client;
 
 import client.ui.LoginFrame;
+import client.ui.UserDashboard;
+import shared.dto.NhanVienDTO;
 import shared.services.*;
 
 import javax.swing.*;
@@ -12,6 +14,8 @@ public class MainClient {
     private static SanPhamService sanPhamService;
     private static HoaDonService hoaDonService;
     private static KhachHangService khachHangService;
+
+    private static NhanVienDTO nhanVien = new NhanVienDTO();
 
     public static void main(String[] args) {
         try {
@@ -27,7 +31,9 @@ public class MainClient {
 
             System.out.println(" Đã kết nối đến RMI Server tại: " + serverIp + ":" + port);
 
-            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
+//            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
+            SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, nhanVienService));
+
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,

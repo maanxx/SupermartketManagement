@@ -29,4 +29,3 @@ public class NhaCungCap {
     @OneToMany(mappedBy = "nhaCungCap", cascade = CascadeType.ALL)
     private List<HoaDonNhap> hoaDonNhaps;
 }
-

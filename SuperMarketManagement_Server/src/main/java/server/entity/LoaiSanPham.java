@@ -17,4 +17,3 @@ public class LoaiSanPham {
     @Column(name = "tenLoai")
     private String tenLoai;
 }
-
