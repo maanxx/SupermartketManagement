@@ -69,9 +69,11 @@ public class UserDashboard extends JFrame {
         logoPanel.setBounds(10, 11, sidebarWidth - 20, logoPanelHeight);
         logoPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0)); // Icon on left, text on right
         sidebarRoot.add(logoPanel);
-
+/////////////////////////////
         // Shopping cart icon
-        int iconSize = (int) (logoPanelHeight * 0.5); // Icon is 50% of logo panel height
+        logoPanel.setLayout(null);
+
+        int iconSize = (int) (logoPanelHeight * 0.3); // Icon is 30% of logo panel height
         JLabel iconLabel = new JLabel();
         iconLabel.setIcon(new ImageIcon("/img/cart.png")); // Placeholder path
         ImageIcon icon = (ImageIcon) iconLabel.getIcon();
@@ -79,86 +81,110 @@ public class UserDashboard extends JFrame {
             Image scaledImage = icon.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
             iconLabel.setIcon(new ImageIcon(scaledImage));
         }
-        iconLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        iconLabel.setBounds(0, 0, iconSize, iconSize);
         logoPanel.add(iconLabel);
-
-        // "MEGA SUPERMARKET" text
+/// /////////////////////////
+        // Mega market
         JPanel textPanel = new JPanel();
         textPanel.setBackground(SIDEBAR_BG_COLOR);
-        textPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0)); // Small gap between "MEGA" and "SUPERMARKET"
-        textPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        textPanel.setBounds(iconSize + 10, 0, sidebarWidth - iconSize - 30, iconSize);
         logoPanel.add(textPanel);
 
-        int megaFontSize = (int) (40 * (screenWidth / 1000.0)); // Larger font for "MEGA"
-        int supermarketFontSize = (int) (20 * (screenWidth / 1000.0)); // Smaller font for "SUPERMARKET"
-        JLabel megaLabel = new JLabel("MEGA");
-        megaLabel.setForeground(TITLE_COLOR);
-        megaLabel.setFont(new Font("Segoe UI", Font.BOLD, megaFontSize));
-        textPanel.add(megaLabel);
+// Tạo panel con để căn giữa "MEGA"
+        JPanel megaPanel = new JPanel();
+        megaPanel.setLayout(new BoxLayout(megaPanel, BoxLayout.X_AXIS));
+        megaPanel.setBackground(SIDEBAR_BG_COLOR);
+// "mega"
+        megaPanel.add(Box.createHorizontalGlue());
+        JLabel megaLabel = new JLabel("M E G A");
+        megaLabel.setForeground(new Color(0xFC, 0xC5, 0x5F));
+        megaLabel.setFont(new Font("Arial", Font.PLAIN | Font.ITALIC, 28));
+        megaPanel.add(megaLabel);
+        textPanel.add(Box.createHorizontalStrut(20));
+        megaPanel.add(Box.createHorizontalGlue());
 
-        JLabel supermarketLabel = new JLabel("SUPERMARKET");
+// "SUPERMARKET"
+        JPanel supermarketPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        supermarketPanel.setBackground(SIDEBAR_BG_COLOR);
+        JLabel supermarketLabel = new JLabel("S U P E R M A R K E T");
         supermarketLabel.setForeground(Color.WHITE);
-        supermarketLabel.setFont(new Font("Segoe UI", Font.BOLD, supermarketFontSize));
-        textPanel.add(supermarketLabel);
+        supermarketLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        supermarketPanel.add(supermarketLabel);
 
-        // Center the content vertically in logoPanel
-        int totalContentHeight = Math.max(iconSize, megaLabel.getPreferredSize().height);
-        int verticalPadding = (logoPanelHeight - totalContentHeight) / 2;
-        logoPanel.setBorder(BorderFactory.createEmptyBorder(verticalPadding, 0, verticalPadding, 0));
+// add
+        textPanel.add(megaPanel);
+        textPanel.add(supermarketPanel);
 
-        // Menu panel in sidebar
-        JPanel menuPanel = new JPanel();
-        menuPanel.setBackground(SIDEBAR_BG_COLOR);
-        menuPanel.setBounds(10, logoPanelHeight + 11, sidebarWidth - 20, menuPanelHeight);
-        sidebarRoot.add(menuPanel);
-        menuPanel.setLayout(null);
+//////////////////
+        // Tạo panel chứa các menu
+        int buttonX = 20;
+        int currentY = logoPanelHeight + 20;
 
-        // Sidebar buttons with RoundedPanel
-        int buttonHeight = (int) (38 * (screenWidth / 1000.0));
-        int buttonWidth = sidebarWidth - 40;
-        int buttonSpacing = (menuPanelHeight - (5 * buttonHeight)) / 6;
-        RoundedPanel btnBanHangPanel = createSidebarButtonPanel("Bán hàng", "/img/buy.png", 10, buttonSpacing);
-        RoundedPanel btnSanPhamPanel = createSidebarButtonPanel("Sản phẩm", "/img/box.png", 10, buttonSpacing + buttonHeight + buttonSpacing);
-        RoundedPanel btnHoaDonPanel = createSidebarButtonPanel("Hóa đơn", "/img/invoice.png", 10, buttonSpacing + (buttonHeight + buttonSpacing) * 2);
-        RoundedPanel btnThongTinCaNhanPanel = createSidebarButtonPanel("Thông tin cá nhân", "/img/employee.png", 10, buttonSpacing + (buttonHeight + buttonSpacing) * 3);
-        RoundedPanel btnDangXuatPanel = createSidebarButtonPanel("Đăng xuất", "/img/logout.png", 10, buttonSpacing + (buttonHeight + buttonSpacing) * 4);
-
-        btnBanHangPanel.addMouseListener(new MouseAdapter() {
+        RoundedPanel btnBanHang = createSidebarButtonPanel("Bán Hàng", "img/iconBanHang.png", buttonX, currentY);
+        btnBanHang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 openBanHang();
             }
         });
-        btnSanPhamPanel.addMouseListener(new MouseAdapter() {
+        sidebarRoot.add(btnBanHang);
+        currentY += btnBanHang.getHeight() + 10;
+
+        RoundedPanel btnSanPham = createSidebarButtonPanel("Sản Phẩm", "img/iconSanPham.png", buttonX, currentY);
+        btnSanPham.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 openQuanLySanPham();
             }
         });
-        btnHoaDonPanel.addMouseListener(new MouseAdapter() {
+        sidebarRoot.add(btnSanPham);
+        currentY += btnSanPham.getHeight() + 10;
+
+        RoundedPanel btnKhachHang = createSidebarButtonPanel("Khách Hàng", "img/iconNhanVien.png", buttonX, currentY);
+        btnKhachHang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                openQuanLyHoaDon();
+                // TODO: Hiện thực sau
+                JOptionPane.showMessageDialog(null, "Chức năng đang phát triển!");
             }
         });
-        btnThongTinCaNhanPanel.addMouseListener(new MouseAdapter() {
+        sidebarRoot.add(btnKhachHang);
+        currentY += btnKhachHang.getHeight() + 10;
+
+        RoundedPanel btnNhanVien = createSidebarButtonPanel("Nhân Viên", "img/iconNhanVien.png", buttonX, currentY);
+        btnNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 openThongTinCaNhan();
             }
         });
-        btnDangXuatPanel.addMouseListener(new MouseAdapter() {
+        sidebarRoot.add(btnNhanVien);
+        currentY += btnNhanVien.getHeight() + 10;
+
+        RoundedPanel btnHoaDon = createSidebarButtonPanel("Hóa Đơn", "img/iconBaoCao.png", buttonX, currentY);
+        btnHoaDon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                openQuanLyHoaDon();
+            }
+        });
+        sidebarRoot.add(btnHoaDon);
+        currentY += btnHoaDon.getHeight() + 10;
+
+// Đăng xuất (nằm ở cuối sidebar)
+        RoundedPanel btnDangXuat = createSidebarButtonPanel("Đăng Xuất", "img/iconDangXuat.png", buttonX, sidebarHeight - 70);
+        btnDangXuat.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 logout();
             }
         });
+        sidebarRoot.add(btnDangXuat);
 
-        menuPanel.add(btnBanHangPanel);
-        menuPanel.add(btnSanPhamPanel);
-        menuPanel.add(btnHoaDonPanel);
-        menuPanel.add(btnThongTinCaNhanPanel);
-        menuPanel.add(btnDangXuatPanel);
+
+
+
 
         // Main content area
         viewControlPanel = new RoundedPanel(10);
@@ -184,15 +210,27 @@ public class UserDashboard extends JFrame {
         panel.setBounds(x, y, buttonWidth, buttonHeight);
         panel.setLayout(null);
 
+        int iconSize = buttonHeight - 8;
+
+        // Load icon từ thư mục tuyệt đối/tương đối như bạn đang dùng
+        JLabel iconLabel = new JLabel();
+        ImageIcon icon = new ImageIcon(iconPath); // ví dụ: "/img/box.png"
+        if (icon.getImage() != null) {
+            Image scaledImage = icon.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
+            iconLabel.setIcon(new ImageIcon(scaledImage));
+        }
+        iconLabel.setBounds(10, (buttonHeight - iconSize) / 2, iconSize, iconSize);
+        panel.add(iconLabel);
+
+        // Text label
         int fontSize = (int) (14 * (screenWidth / 1000.0));
         JLabel label = new JLabel(text);
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
-        label.setBounds(23, 0, buttonWidth - 23, buttonHeight);
-        // Uncomment if you have icons
-        // label.setIcon(new ImageIcon(getClass().getResource(iconPath)));
+        label.setBounds(iconSize + 20, 0, buttonWidth - iconSize - 30, buttonHeight);
         panel.add(label);
 
+        // Hover effects
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -207,6 +245,7 @@ public class UserDashboard extends JFrame {
 
         return panel;
     }
+
 
     private void openThongTinCaNhan() {
         JDialog dialog = new JDialog(this, "Thông tin cá nhân", true);
