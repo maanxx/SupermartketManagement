@@ -95,6 +95,77 @@ public class SeedDataMain {
             nhanVienDAO.save(user);
         }
 
+        System.out.println(" Thêm nhà cung cấp thực tế...");
+        if (nhaCungCapDAO.findById("NCC01") == null) {
+            nhaCungCapDAO.save(NhaCungCap.builder()
+                    .maNhaCungCap("NCC01")
+                    .tenNhaCungCap("Công ty TNHH Gạo ST25 Việt Nam")
+                    .diaChi("Sóc Trăng")
+                    .build());
+        }
+        if (nhaCungCapDAO.findById("NCC02") == null) {
+            nhaCungCapDAO.save(NhaCungCap.builder()
+                    .maNhaCungCap("NCC02")
+                    .tenNhaCungCap("Coca-Cola Việt Nam")
+                    .diaChi("TP. Hồ Chí Minh")
+                    .build());
+        }
+        if (nhaCungCapDAO.findById("NCC03") == null) {
+            nhaCungCapDAO.save(NhaCungCap.builder()
+                    .maNhaCungCap("NCC03")
+                    .tenNhaCungCap("Vinamilk")
+                    .diaChi("TP. Hồ Chí Minh")
+                    .build());
+        }
+        if (nhaCungCapDAO.findById("NCC04") == null) {
+            nhaCungCapDAO.save(NhaCungCap.builder()
+                    .maNhaCungCap("NCC04")
+                    .tenNhaCungCap("Unilever Việt Nam")
+                    .diaChi("TP. Hồ Chí Minh")
+                    .build());
+        }
+        if (nhaCungCapDAO.findById("NCC05") == null) {
+            nhaCungCapDAO.save(NhaCungCap.builder()
+                    .maNhaCungCap("NCC05")
+                    .tenNhaCungCap("Công ty Mondelez Kinh Đô")
+                    .diaChi("Bình Dương")
+                    .build());
+        }
+        if (nhaCungCapDAO.findById("NCC06") == null) {
+            nhaCungCapDAO.save(NhaCungCap.builder()
+                    .maNhaCungCap("NCC06")
+                    .tenNhaCungCap("Công ty TNHH Dell Việt Nam")
+                    .diaChi("Hà Nội")
+                    .build());
+        }
+        if (nhaCungCapDAO.findById("NCC07") == null) {
+            nhaCungCapDAO.save(NhaCungCap.builder()
+                    .maNhaCungCap("NCC07")
+                    .tenNhaCungCap("Điện máy Xanh")
+                    .diaChi("TP. Hồ Chí Minh")
+                    .build());
+        }
+
+        System.out.println(" Thêm loại sản phẩm...");
+        if (loaiSanPhamDAO.findById("LSP01") == null) {
+            loaiSanPhamDAO.save(LoaiSanPham.builder()
+                    .maLoai("LSP01")
+                    .tenLoai("Thực phẩm")
+                    .build());
+        }
+        if (loaiSanPhamDAO.findById("LSP02") == null) {
+            loaiSanPhamDAO.save(LoaiSanPham.builder()
+                    .maLoai("LSP02")
+                    .tenLoai("Điện tử")
+                    .build());
+        }
+        if (loaiSanPhamDAO.findById("LSP03") == null) {
+            loaiSanPhamDAO.save(LoaiSanPham.builder()
+                    .maLoai("LSP03")
+                    .tenLoai("Gia dụng")
+                    .build());
+        }
+
         System.out.println("🛒 Thêm sản phẩm...");
 
         if (sanPhamDAO.findById("SP01") == null) {
@@ -187,24 +258,6 @@ public class SeedDataMain {
                     .ngayTao(LocalDate.of(2025, 4, 10))
                     .build());
         }
-
-
-        System.out.println(" Thêm nhà cung cấp...");
-        if (nhaCungCapDAO.findById("NCC01") == null) {
-            nhaCungCapDAO.save(NhaCungCap.builder()
-                    .maNhaCungCap("NCC01")
-                    .tenNhaCungCap("Công ty CP Thực phẩm ABC")
-                    .diaChi("Hồ Chí Minh")
-                    .build());
-        }
-        if (nhaCungCapDAO.findById("NCC02") == null) {
-            nhaCungCapDAO.save(NhaCungCap.builder()
-                    .maNhaCungCap("NCC02")
-                    .tenNhaCungCap("Điện máy XYZ")
-                    .diaChi("Hà Nội")
-                    .build());
-        }
-
 
         System.out.println("\n Danh sách sản phẩm:");
         sanPhamDAO.findAll().forEach(sp -> {
