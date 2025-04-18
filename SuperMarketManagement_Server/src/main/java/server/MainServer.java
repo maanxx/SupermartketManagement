@@ -4,7 +4,6 @@ import server.rmi.HoaDonServiceImpl;
 import server.rmi.NhanVienServiceImpl;
 import server.rmi.SanPhamServiceImpl;
 import server.rmi.KhachHangServiceImpl;
-import shared.services.*;
 
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
@@ -13,7 +12,7 @@ public class MainServer {
     public static void main(String[] args) {
         try {
             // Mở cmd -> gõ ipconfig -> địa chỉ ipv4
-            String serverIp = "192.168.1.8";
+            String serverIp = "192.168.1.9";
             int port = 1099;
 
             System.setProperty("java.rmi.server.hostname", serverIp);

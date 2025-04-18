@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="" />
+    <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/box.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/buy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/calendar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/customer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/employee.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/eye_password.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/home-page.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/invoice.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/logout.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/money.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/setting.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/img/user.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,21 +41,21 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
+    &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
     &quot;assignee&quot;: &quot;huutai243&quot;
-  }
-}</component>
+    }
+    }</component>
   <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/maanxx/SupermartketManagement&quot;,
     &quot;accountId&quot;: &quot;85a67026-7c69-4880-8cba-8ec33b2a159c&quot;
-  }
-}</component>
+    }
+    }</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
-  &quot;isMigrated&quot;: true
-}</component>
+    &quot;isMigrated&quot;: true
+    }</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -47,31 +67,36 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 6
-}</component>
+    &quot;associatedIndex&quot;: 6
+    }</component>
   <component name="ProjectId" id="2vJAkn28JIgIT2ZO8JXjExCLfUk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.MainServer.executor&quot;: &quot;Debug&quot;,
-    &quot;Application.SeedDataMain.executor&quot;: &quot;Debug&quot;,
-    &quot;Maven.SuperMarketManagement_Server [clean...].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/SuperMarket/SupermartketManagement/SupermartketManagement_Shared&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MainServer.executor": "Run",
+    "Application.SeedDataMain.executor": "Run",
+    "Maven.SuperMarketManagement_Server [clean...].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "man",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/SupermartketManagement/SupermarketManagement_Client",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\SuperMarket\SupermartketManagement\SuperMarketManagement_Server\src\main\resources\images" />
@@ -138,6 +163,7 @@
       <workItem from="1744366066536" duration="3369000" />
       <workItem from="1744375053692" duration="8865000" />
       <workItem from="1744384378932" duration="2297000" />
+      <workItem from="1744891908567" duration="7387000" />
     </task>
     <servers />
   </component>

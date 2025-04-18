@@ -73,5 +73,3 @@ public class SanPhamDAO extends BaseDAO<SanPham> {
     }
 
 }
-
-

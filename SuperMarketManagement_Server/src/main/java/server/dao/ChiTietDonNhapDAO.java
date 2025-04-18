@@ -29,4 +29,3 @@ public class ChiTietDonNhapDAO extends BaseDAO<ChiTietDonNhap> {
     }
 
 }
-

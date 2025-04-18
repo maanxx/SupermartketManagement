@@ -1,6 +1,8 @@
 package client;
 
 import client.ui.LoginFrame;
+import client.ui.UserDashboard;
+import shared.dto.NhanVienDTO;
 import shared.services.*;
 
 import javax.swing.*;
@@ -13,10 +15,12 @@ public class MainClient {
     private static HoaDonService hoaDonService;
     private static KhachHangService khachHangService;
 
+    private static NhanVienDTO nhanVien = new NhanVienDTO();
+
     public static void main(String[] args) {
         try {
             // Mở cmd -> gõ ipconfig -> địa chỉ ipv4
-            String serverIp = "192.168.1.8";
+            String serverIp = "192.168.1.9";
             int port = 1099;
             Registry registry = LocateRegistry.getRegistry(serverIp, port);
 
@@ -27,7 +31,9 @@ public class MainClient {
 
             System.out.println(" Đã kết nối đến RMI Server tại: " + serverIp + ":" + port);
 
-            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
+//            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
+            SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, getNhanVienService()));
+
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
