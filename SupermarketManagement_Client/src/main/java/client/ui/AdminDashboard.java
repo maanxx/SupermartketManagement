@@ -7,13 +7,14 @@ import shared.services.SanPhamService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class AdminDashboard extends JFrame {
 
-    private NhanVienService nhanVienService;
-    private SanPhamService sanPhamService;
-    private NhanVienDTO loggedInNhanVien;
+    private final NhanVienService nhanVienService;
+    private final SanPhamService sanPhamService;
+    private final NhanVienDTO loggedInNhanVien;
     private final CardLayout cardLayout;
     private final JPanel mainPanel;
 
@@ -23,32 +24,34 @@ public class AdminDashboard extends JFrame {
         this.sanPhamService = MainClient.getSanPhamService();
 
         setTitle("Admin Dashboard - " + nhanVien.getHoTen());
-        setSize(1100, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setUndecorated(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setContentPane(new BackgroundPanel());
         setLayout(new BorderLayout(10, 10));
         setResizable(false);
 
-        JPanel headerPanel = createHeaderPanel();
-        add(headerPanel, BorderLayout.NORTH);
-
-        JPanel sidebar = createSidebarPanel();
-        add(sidebar, BorderLayout.WEST);
+        add(createHeaderPanel(), BorderLayout.NORTH);
+        add(createSidebarPanel(), BorderLayout.WEST);
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         mainPanel.setOpaque(false);
-        mainPanel.add(
-                new ThongKeChartAdminPanel(
-                        MainClient.getHoaDonService(),
-                        sanPhamService,
-                        nhanVienService
-                ),
-                "DASHBOARD"
-        );
-        add(mainPanel, BorderLayout.CENTER);
 
+        // Thêm các panel vào mainPanel
+        mainPanel.add(new ThongKeChartAdminPanel(MainClient.getHoaDonService(), sanPhamService, nhanVienService), "DASHBOARD");
+
+        JPanel hoaDonWrapper = new JPanel(new GridBagLayout());
+        hoaDonWrapper.setOpaque(false);
+        hoaDonWrapper.add(new QuanLyHoaDonPanel());
+        mainPanel.add(hoaDonWrapper, "HOADON");
+
+        // Panel quản lý sản phẩm
+        mainPanel.add(new QuanLySanPhamPanel(sanPhamService), "SANPHAM");
+        // Panel quản lý nhân viên
+        mainPanel.add(new QuanLyNhanVienPanel(nhanVienService), "NHANVIEN");
+
+        add(mainPanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
@@ -64,12 +67,24 @@ public class AdminDashboard extends JFrame {
                 g2d.fillRect(0, 0, w, h);
             }
         };
-        header.setPreferredSize(new Dimension(800, 100));
+        header.setPreferredSize(new Dimension(0, 100)); // Chiều rộng linh hoạt
         header.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        // Thêm logo hoặc tên hệ thống
+        JLabel lblLogo = new JLabel(new ImageIcon("path_to_logo_image"));
+        lblLogo.setPreferredSize(new Dimension(100, 100));
+
+        // Xin chào admin
         JLabel lblWelcome = new JLabel("Xin chào, Quản lý: " + loggedInNhanVien.getHoTen(), SwingConstants.CENTER);
         lblWelcome.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblWelcome.setForeground(Color.WHITE);
-        header.add(lblWelcome, BorderLayout.CENTER);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(lblLogo, BorderLayout.WEST);
+        topPanel.add(lblWelcome, BorderLayout.CENTER);
+
+        header.add(topPanel, BorderLayout.CENTER);
+
         return header;
     }
 
@@ -86,12 +101,9 @@ public class AdminDashboard extends JFrame {
         JButton btnThongKe = createSidebarButton("Thống kê");
         JButton btnDangXuat = createSidebarButton("Đăng xuất");
 
-        btnQLSanPham.addActionListener(e -> {
-            // Mở cửa sổ quản lý sản phẩm
-            new QuanLySanPhamFrame(sanPhamService);
-        });
-        btnQLHoaDon.addActionListener(e -> new QuanLyHoaDonFrame());
-        btnQLNhanVien.addActionListener(e -> new QuanLyNhanVienFrame(nhanVienService));
+        btnQLSanPham.addActionListener(e -> switchPanel("SANPHAM"));
+        btnQLHoaDon.addActionListener(e -> switchPanel("HOADON"));
+        btnQLNhanVien.addActionListener(e -> switchPanel("NHANVIEN"));
         btnThongKe.addActionListener(e -> switchPanel("DASHBOARD"));
         btnDangXuat.addActionListener(e -> logout());
 
@@ -112,6 +124,8 @@ public class AdminDashboard extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(new EmptyBorder(10, 15, 10, 15));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Thêm hiệu ứng hover
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(41, 128, 185));
@@ -120,6 +134,7 @@ public class AdminDashboard extends JFrame {
                 button.setBackground(new Color(52, 73, 94));
             }
         });
+
         return button;
     }
 
@@ -135,7 +150,6 @@ public class AdminDashboard extends JFrame {
         }
     }
 
-    // Lớp BackgroundPanel để vẽ nền nhẹ cho toàn bộ frame
     private class BackgroundPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
@@ -147,4 +161,6 @@ public class AdminDashboard extends JFrame {
             g2d.fillRect(0, 0, w, h);
         }
     }
+
+
 }

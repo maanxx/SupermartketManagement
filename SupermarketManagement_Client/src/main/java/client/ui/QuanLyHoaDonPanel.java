@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
@@ -12,74 +13,110 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class QuanLyHoaDonFrame extends JFrame {
+public class QuanLyHoaDonPanel extends JPanel {
     private JTable tableHoaDon;
     private DefaultTableModel tableModel;
     private static final List<String[]> danhSachHoaDon = new ArrayList<>();
     private JDateChooser dateChooser;
 
-    public QuanLyHoaDonFrame() {
-        setTitle("Quản Lý Hóa Đơn");
-        setSize(1000, 650);  // Điều chỉnh kích thước lớn hơn cho thoải mái
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+    public QuanLyHoaDonPanel() {
         setLayout(new BorderLayout(10, 10));
-        setResizable(false);
+        setBackground(Color.WHITE);
 
-        // Panel chính: Header + Table + Date Filter + Button
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        add(mainPanel, BorderLayout.CENTER);
+        add(createHeaderPanel(), BorderLayout.NORTH);
 
-        // Header Panel
-        mainPanel.add(createHeaderPanel(), BorderLayout.NORTH);
-
-        // Panel chứa cả bảng và lọc theo ngày
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        add(contentPanel, BorderLayout.CENTER);
 
-        // Panel chứa Table + Date Filter
         JPanel tablePanel = new JPanel(new BorderLayout(10, 10));
         contentPanel.add(tablePanel, BorderLayout.CENTER);
 
-        // Panel lọc theo ngày nằm trên bảng hóa đơn
         tablePanel.add(createDateFilterPanel(), BorderLayout.NORTH);
         tablePanel.add(createTablePanel(), BorderLayout.CENTER);
 
-        // Panel chứa Button (ở dưới)
-        mainPanel.add(createButtonPanel(), BorderLayout.SOUTH);
+        add(createButtonPanel(), BorderLayout.SOUTH);
 
         loadHoaDonData();
-        setVisible(true);
+        setPreferredSize(new Dimension(1100, 700));
     }
 
     private JPanel createHeaderPanel() {
         JPanel headerPanel = new GradientHeaderPanel("Quản Lý Hóa Đơn");
-        headerPanel.setPreferredSize(new Dimension(1000, 80));
+//        headerPanel.setPreferredSize(new Dimension(1920, 80));
+        headerPanel.setPreferredSize(new Dimension(0, 80)); // Chiều rộng tự co theo frame
+
         return headerPanel;
     }
 
     private JScrollPane createTablePanel() {
-        tableModel = new DefaultTableModel(
-                new String[]{"Mã Hóa Đơn", "Ngày lập", "Tổng tiền", "Phương thức"}, 0
-        ) {
+        String[] columnNames = {"Mã Hóa Đơn", "Ngày lập", "Tổng tiền", "Phương thức", "Hành động"};
+        tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return column == 4;
             }
         };
 
-        tableHoaDon = new JTable(tableModel);
-        tableHoaDon.setRowHeight(35);  // Tăng chiều cao hàng để dễ đọc
+        tableHoaDon = new JTable(tableModel) {
+            private int hoveredRow = -1;
+
+            {
+                addMouseMotionListener(new MouseMotionAdapter() {
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        int row = rowAtPoint(e.getPoint());
+                        if (row != hoveredRow) {
+                            hoveredRow = row;
+                            repaint();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                if (!isRowSelected(row)) {
+                    c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(245, 245, 245));
+                    if (row == hoveredRow) {
+                        c.setBackground(new Color(230, 240, 255));
+                    }
+                } else {
+                    c.setBackground(new Color(179, 216, 255));
+                }
+                if (c instanceof JLabel l) {
+                    l.setHorizontalAlignment(SwingConstants.CENTER);
+                }
+                return c;
+            }
+        };
+
+        tableHoaDon.setRowHeight(40);
         tableHoaDon.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         tableHoaDon.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         tableHoaDon.getTableHeader().setBackground(new Color(52, 152, 219));
         tableHoaDon.getTableHeader().setForeground(Color.WHITE);
 
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < tableHoaDon.getColumnCount(); i++) {
-            tableHoaDon.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
+        tableHoaDon.getColumnModel().getColumn(4).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
+            JButton btn = new JButton("\uD83D\uDC41 Xem");
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
+            btn.setBackground(new Color(41, 128, 185));
+            btn.setForeground(Color.WHITE);
+            btn.setFocusPainted(false);
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            return btn;
+        });
+
+        tableHoaDon.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int row = tableHoaDon.rowAtPoint(e.getPoint());
+                int col = tableHoaDon.columnAtPoint(e.getPoint());
+                if (col == 4) {
+                    tableHoaDon.setRowSelectionInterval(row, row);
+                    xemChiTietHoaDon();
+                }
+            }
+        });
 
         JScrollPane scrollPane = new JScrollPane(tableHoaDon);
         scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -90,26 +127,20 @@ public class QuanLyHoaDonFrame extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-        JButton btnXemChiTiet = createStyledButton("🔍 Xem Chi Tiết");
-        btnXemChiTiet.addActionListener(e -> xemChiTietHoaDon());
-        buttonPanel.add(btnXemChiTiet);
-
         return buttonPanel;
     }
 
     private JPanel createDateFilterPanel() {
-        JPanel dateFilterPanel = new JPanel();
-        dateFilterPanel.setLayout(new GridBagLayout());
+        JPanel dateFilterPanel = new JPanel(new GridBagLayout());
         dateFilterPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
 
         JLabel label = new JLabel("Chọn ngày:");
         label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         dateFilterPanel.add(label, gbc);
 
         dateChooser = new JDateChooser();
@@ -155,28 +186,6 @@ public class QuanLyHoaDonFrame extends JFrame {
         }
     }
 
-    private JButton createStyledButton(String text) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        button.setBackground(new Color(52, 152, 219));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(new EmptyBorder(8, 16, 8, 16));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        button.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent evt) {
-                button.setBackground(new Color(41, 128, 185));
-            }
-
-            public void mouseExited(MouseEvent evt) {
-                button.setBackground(new Color(52, 152, 219));
-            }
-        });
-
-        return button;
-    }
-
     private void xemChiTietHoaDon() {
         int selectedRow = tableHoaDon.getSelectedRow();
         if (selectedRow < 0) {
@@ -206,7 +215,7 @@ public class QuanLyHoaDonFrame extends JFrame {
     }
 
     public static void luuHoaDon(String maHoaDon, String ngayLap, double tongTien, String phuongThuc) {
-        danhSachHoaDon.add(new String[]{maHoaDon, ngayLap, String.format("%.2f VND", tongTien), phuongThuc});
+        danhSachHoaDon.add(new String[]{maHoaDon, ngayLap, String.format("%.2f VND", tongTien), phuongThuc, "\uD83D\uDC41"});
     }
 
     private static class GradientHeaderPanel extends JPanel {
@@ -240,8 +249,5 @@ public class QuanLyHoaDonFrame extends JFrame {
         }
     }
 
-    // Main method để chạy riêng form này
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(QuanLyHoaDonFrame::new);
-    }
+
 }

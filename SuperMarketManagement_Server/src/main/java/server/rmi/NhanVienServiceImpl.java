@@ -29,6 +29,7 @@ public class NhanVienServiceImpl extends UnicastRemoteObject implements NhanVien
         return nv != null ? convertToDTO(nv) : null;
     }
 
+
     @Override
     public void updatePassword(String id, String newPassword) throws RemoteException {
         NhanVien nv = nhanVienDAO.findById(id);

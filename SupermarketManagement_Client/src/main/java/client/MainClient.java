@@ -1,5 +1,6 @@
 package client;
 
+import client.ui.AdminDashboard;
 import client.ui.LoginFrame;
 import client.ui.UserDashboard;
 import shared.dto.NhanVienDTO;
@@ -32,7 +33,8 @@ public class MainClient {
             System.out.println(" Đã kết nối đến RMI Server tại: " + serverIp + ":" + port);
 
 //            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
-            SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, getNhanVienService()));
+//            SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, getNhanVienService()));
+            SwingUtilities.invokeLater(() -> new AdminDashboard(nhanVien, getNhanVienService()));
 
 
         } catch (Exception e) {
@@ -63,4 +65,5 @@ public class MainClient {
         if (khachHangService == null) throw new IllegalStateException("Lỗi: KhachHangService null!");
         return khachHangService;
     }
+
 }
