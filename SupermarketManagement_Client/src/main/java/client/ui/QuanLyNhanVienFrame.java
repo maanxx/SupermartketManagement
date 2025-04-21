@@ -181,6 +181,20 @@ public class QuanLyNhanVienFrame extends JFrame {
         tableNhanVien = new JTable(tableModel);
         styleTable(tableNhanVien);
 
+        // Thêm sự kiện nhấp đúp chuột để hiển thị dialog chỉnh sửa
+        tableNhanVien.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && !e.isConsumed()) { // Nhấp đúp chuột
+                    e.consume();
+                    int selectedRow = tableNhanVien.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        editNhanVien(); // Gọi phương thức chỉnh sửa nhân viên
+                    }
+                }
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(tableNhanVien) {
             @Override
             protected void paintComponent(Graphics g) {

@@ -5,126 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="code man">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca/storage_v2/_src_/schema/supermarketmanagement.-gqfaw.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/SeedDataMain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/dao/ChiTietDonNhapDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server/entity/KhachHang.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/coca.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/gao-st25.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/laptop-dell.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/noi-com.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/omo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/oreo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/vinamilk.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/coca.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/gao-st25.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/laptop-dell.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/noi-com.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/omo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/oreo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/vinamilk.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/client_images/z6448912666514_89998acaaa739b3e47ce1c2d96eafee0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/ImgFront.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/background.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/cart.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconBanHang.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconBaoCao.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconDangXuat.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconHome.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconKhuyenMai.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconNhaCungCap.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconNhanVien.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/iconSanPham.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/plus.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/LoginFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyNhanVienFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLySanPhamUserFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/ThongKeChartUserPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.mvn/wrapper/maven-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/MainClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/AdminDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/AdminDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/LoginFrame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/MainDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/MainDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/QuanLyBanHangFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyBanHangFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/QuanLyHoaDonFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyHoaDonFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/QuanLyNhanVienFrame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/QuanLySanPhamFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLySanPhamFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/ThanhToanFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/ThanhToanFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/ThongKeChartAdminPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/ThongKeChartAdminPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/ThongKeChartUserPanel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/client/ui/UserDashboard.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/MainServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/config/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/config/HibernateUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/BaseDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/BaseDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/ChiTietDonNhapDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/ChiTietHoaDonDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/ChiTietHoaDonDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/DonViDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/DonViDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/HoaDonDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/HoaDonDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/HoaDonNhapDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/HoaDonNhapDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/KhachHangDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/KhachHangDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/LoaiSanPhamDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/LoaiSanPhamDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/NhaCungCapDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/NhaCungCapDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/NhanVienDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/NhanVienDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/SanPhamDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/SanPhamDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/dao/TaiKhoanDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/dao/TaiKhoanDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/ChiTietDonNhap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/ChiTietDonNhap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/ChiTietHoaDon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/ChiTietHoaDon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/DonVi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/DonVi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/HoaDon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/HoaDon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/HoaDonNhap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/HoaDonNhap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/KhachHang.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/LoaiSanPham.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/LoaiSanPham.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/NhaCungCap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/NhaCungCap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/NhanVien.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/NhanVien.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/SanPham.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/SanPham.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/entity/TaiKhoan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/entity/TaiKhoan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/rmi/HoaDonServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/rmi/HoaDonServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/rmi/KhachHangServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/rmi/KhachHangServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/rmi/NhanVienServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/rmi/NhanVienServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/server/rmi/SanPhamServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/rmi/SanPhamServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/dto/HoaDonDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/dto/HoaDonDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/dto/KhachHangDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/dto/KhachHangDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/dto/LoaiSanPhamDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/dto/LoaiSanPhamDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/dto/NhaCungCapDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/dto/NhaCungCapDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/dto/NhanVienDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/dto/NhanVienDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/dto/SanPhamDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/dto/SanPhamDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/services/HoaDonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/services/HoaDonService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/services/KhachHangService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/services/KhachHangService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/services/NhanVienService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/services/NhanVienService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/shared/services/SanPhamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermartketManagement_Shared/src/main/java/shared/services/SanPhamService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyHoaDonPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyNhanVienPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLySanPhamPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca/storage_v2/_src_/schema/supermarketmanagement.-gqfaw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/rmi/NhanVienServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/rmi/NhanVienServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/AdminDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/AdminDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyHoaDonFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyHoaDonFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyNhanVienFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyNhanVienFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,32 +70,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.MainServer.executor": "Run",
-    "Application.SeedDataMain.executor": "Run",
-    "Maven.SuperMarketManagement_Server [clean...].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging thinthin",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/SupermartketManagement/SuperMarketManagement_Server",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MainServer.executor&quot;: &quot;Run&quot;,
+    &quot;Application.SeedDataMain.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.SuperMarketManagement_Server [clean...].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;thinthin&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/SupermartketManagement/SupermarketManagement_Client&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\SuperMarket\SupermartketManagement\SuperMarketManagement_Server\src\main\resources\images" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="server.rmi" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -265,7 +163,8 @@
       <workItem from="1744375053692" duration="8865000" />
       <workItem from="1744384378932" duration="2297000" />
       <workItem from="1744891908567" duration="7387000" />
-      <workItem from="1745223196640" duration="2119000" />
+      <workItem from="1745223196640" duration="5958000" />
+      <workItem from="1745240101590" duration="1501000" />
     </task>
     <task id="LOCAL-00001" summary="code man">
       <option name="closed" value="true" />
