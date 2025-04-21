@@ -1,27 +1,50 @@
+####################################
+### ⚙Maven Build Artifacts ###
+####################################
 target/
-!.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+####################################
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
+####################################
+.idea/
 *.iml
 *.ipr
+*.iws
 
+.idea/*.xml
+.idea/**/dataSources/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/runConfigurations/
+.idea/**/sqlliteSettings.xml
+.idea/**/markdown-navigator.xml
+.idea/**/dataSources.local.xml
+.idea/**/dataSources.xml
+.idea/**/dataSources.ids
+.idea/**/sqlDataSources.xml
+
+####################################
+### Unit Test ###
+####################################
+*.log
+*.tmp
+
+####################################
 ### Eclipse ###
-.apt_generated
+####################################
+.apt_generated/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 
-### NetBeans ###
+####################################
+### 🪛 NetBeans ###
+####################################
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -31,8 +54,30 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+####################################
+### 💻 VS Code ###
+####################################
 .vscode/
 
-### Mac OS ###
+####################################
+### macOS ###
+####################################
 .DS_Store
+
+####################################
+###Windows ###
+####################################
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+####################################
+### System
+####################################
+*.swp
+*.swo
+*.bak
+*.tmp
+*.old
+*.orig
