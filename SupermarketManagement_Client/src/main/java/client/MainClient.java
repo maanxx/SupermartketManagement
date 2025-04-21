@@ -2,6 +2,7 @@ package client;
 
 import client.ui.AdminDashboard;
 import client.ui.LoginFrame;
+import client.ui.QuanLyBanHangFrame;
 import client.ui.UserDashboard;
 import shared.dto.NhanVienDTO;
 import shared.services.*;
@@ -33,8 +34,10 @@ public class MainClient {
             System.out.println(" Đã kết nối đến RMI Server tại: " + serverIp + ":" + port);
 
 //            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
-//            SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, getNhanVienService()));
-            SwingUtilities.invokeLater(() -> new AdminDashboard(nhanVien, getNhanVienService()));
+            SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, getNhanVienService()));
+//            SwingUtilities.invokeLater(() -> new AdminDashboard(nhanVien, getNhanVienService()));
+//            SwingUtilities.invokeLater(() -> new QuanLyBanHangFrame(getSanPhamService()));
+
 
 
         } catch (Exception e) {
