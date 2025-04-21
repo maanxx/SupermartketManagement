@@ -6,11 +6,11 @@ import shared.services.NhanVienService;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
+
+import static client.ui.UserDashboard.*;
 
 public class LoginFrame extends JFrame {
     private static final String APP_TITLE = "Đăng nhập";
@@ -278,31 +278,98 @@ public class LoginFrame extends JFrame {
             String username = txtUsername.getText().trim();
             String password = new String(txtPassword.getPassword()).trim();
 
-            if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
             NhanVienDTO nhanVien = nhanVienService.login(username, password);
             if (nhanVien != null) {
-                JOptionPane.showMessageDialog(this, "Đăng nhập thành công! Chào " + nhanVien.getHoTen());
-                if ("ADMIN".equalsIgnoreCase(nhanVien.getRole())) {
-                    new AdminDashboard(nhanVien, nhanVienService);
-                } else {
-                    new UserDashboard(nhanVien, nhanVienService);
-                }
-                dispose();
+                showSuccessDialog("Đăng nhập thành công! Chào " + nhanVien.getHoTen(), () -> {
+                    if ("ADMIN".equalsIgnoreCase(nhanVien.getRole())) {
+                        new AdminDashboard(nhanVien, nhanVienService);
+                    } else {
+                        new UserDashboard(nhanVien, nhanVienService);
+                    }
+                    dispose();
+                });
             } else {
-                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                showErrorDialog("Sai tài khoản hoặc mật khẩu!");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi kết nối server! Vui lòng thử lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            showErrorDialog("Lỗi kết nối server! Vui lòng thử lại.");
         }
+    }
 
+
+    private void showSuccessDialog(String message, Runnable onCloseAction) {
+        showCustomDialog("Thành công", message, "img/check.png", new Color(0, 153, 0), onCloseAction);
+    }
+
+    private void showErrorDialog(String message) {
+        showCustomDialog("Lỗi", message, "img/alert.png", Color.RED, null);
+    }
+
+    private void showCustomDialog(String title, String message, String iconPath, Color messageColor, Runnable onCloseAction) {
+        JDialog dialog = new JDialog(this, title, true);
+        dialog.setUndecorated(true);
+        dialog.setSize(370, 160);
+        dialog.setLocationRelativeTo(this);
+
+        RoundedPanel dialogPanel = new RoundedPanel(0);
+        dialogPanel.setBackground(Color.white);
+        dialogPanel.setLayout(new BorderLayout(10, 10));
+        dialogPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0, 50), 1));
+        dialog.add(dialogPanel);
+
+        // Load icon
+        ImageIcon icon = new ImageIcon(iconPath);
+        Image scaledImage = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        JLabel messageLabel = new JLabel(message, scaledIcon, SwingConstants.LEFT);
+        messageLabel.setIconTextGap(15);
+        messageLabel.setForeground(messageColor);
+        messageLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        dialogPanel.add(messageLabel, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(SIDEBAR_BG_COLOR);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        dialogPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        RoundedPanel okButton = new RoundedPanel(10);
+        okButton.setBackground(BUTTON_BG_COLOR);
+        okButton.setPreferredSize(new Dimension(100, 34));
+        okButton.setLayout(new BorderLayout());
+        JLabel okLabel = new JLabel("Xác nhận", SwingConstants.CENTER);
+        okLabel.setForeground(Color.WHITE);
+        okLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        okButton.add(okLabel, BorderLayout.CENTER);
+        okButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                okButton.setBackground(BUTTON_HOVER_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                okButton.setBackground(BUTTON_BG_COLOR);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dialog.dispose();
+                if (onCloseAction != null) {
+                    onCloseAction.run();
+                }
+            }
+        });
+        buttonPanel.add(okButton);
+
+        dialog.setVisible(true);
     }
 
 }
+
+
 
 class RoundedBorder extends AbstractBorder {
     private final int radius;

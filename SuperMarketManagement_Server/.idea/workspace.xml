@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="code man">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/SeedDataMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/SeedDataMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/.idea/dataSources.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,12 +63,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.MainServer.executor": "Debug",
+    "Application.MainServer.executor": "Run",
     "Application.SeedDataMain.executor": "Debug",
     "Maven.SuperMarketManagement_Server [clean...].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "man",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/aaaaaaaaaaaa/SupermartketManagement",
     "node.js.detected.package.eslint": "true",
@@ -94,7 +95,7 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.SeedDataMain">
+  <component name="RunManager" selected="Application.MainServer">
     <configuration name="MainServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server.MainServer" />
       <module name="SuperMarketManagement_Server" />
@@ -123,8 +124,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SeedDataMain" />
         <item itemvalue="Application.MainServer" />
+        <item itemvalue="Application.SeedDataMain" />
       </list>
     </recent_temporary>
   </component>

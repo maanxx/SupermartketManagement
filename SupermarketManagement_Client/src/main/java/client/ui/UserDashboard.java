@@ -16,9 +16,11 @@ public class UserDashboard extends JFrame {
     private final NhanVienDTO loggedInNhanVien;
 
     // Colors from App_Main
-    private static final Color SIDEBAR_BG_COLOR = new Color(42, 82, 39); // Dark green
-    private static final Color BUTTON_BG_COLOR = new Color(59, 132, 52); // Lighter green
-    private static final Color BUTTON_HOVER_COLOR = new Color(238, 186, 13);
+    public static final Color SIDEBAR_BG_COLOR = new Color(42, 82, 39); // Dark green
+    public static final Color BUTTON_BG_COLOR = new Color(59, 132, 52); // Lighter green
+    public static final Color BACKGROUND_LOGOUT = new Color(32, 143, 56);
+
+    public static final Color BUTTON_HOVER_COLOR = new Color(238, 186, 13);
     private static final Color TITLE_COLOR = new Color(242, 127, 87); // Peach shade for title
 
     private JPanel viewControlPanel; // Main content area
@@ -145,7 +147,6 @@ public class UserDashboard extends JFrame {
         btnKhachHang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // TODO: Hiện thực sau
                 JOptionPane.showMessageDialog(null, "Chức năng đang phát triển!");
             }
         });
@@ -313,12 +314,89 @@ public class UserDashboard extends JFrame {
     }
 
     private void logout() {
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            dispose();
-            SwingUtilities.invokeLater(() -> new LoginFrame(MainClient.getNhanVienService()));
-        }
+        JDialog dialog = new JDialog(this, "Xác nhận đăng xuất", true);
+        dialog.setUndecorated(true);
+        dialog.setSize(400, 180);
+        dialog.setLocationRelativeTo(this);
+
+        RoundedPanel dialogPanel = new RoundedPanel(0);
+        dialogPanel.setBackground(Color.white);
+        dialogPanel.setLayout(new BorderLayout(10, 10));
+        dialogPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0, 50), 1));
+        dialog.add(dialogPanel);
+
+        ImageIcon icon = new ImageIcon("img/check.png");
+        Image scaledImage = icon.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel messageLabel = new JLabel("Bạn có chắc chắn muốn đăng xuất?", scaledIcon, SwingConstants.LEFT);
+        messageLabel.setIconTextGap(15);
+        messageLabel.setForeground(BUTTON_BG_COLOR);
+        messageLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        dialogPanel.add(messageLabel, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(SIDEBAR_BG_COLOR);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        dialogPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        RoundedPanel yesButton = new RoundedPanel(10);
+        yesButton.setBackground(new Color(0, 153, 0));
+        yesButton.setPreferredSize(new Dimension(100, 36));
+        yesButton.setLayout(new BorderLayout());
+        JLabel yesLabel = new JLabel("Xác nhận", SwingConstants.CENTER);
+        yesLabel.setForeground(Color.WHITE);
+        yesLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        yesButton.add(yesLabel, BorderLayout.CENTER);
+        yesButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                yesButton.setBackground(BUTTON_HOVER_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                    yesButton.setBackground(new Color(0, 153, 0));
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dialog.dispose();
+                UserDashboard.this.dispose();
+                SwingUtilities.invokeLater(() -> new LoginFrame(MainClient.getNhanVienService()));
+            }
+        });
+        buttonPanel.add(yesButton);
+
+        RoundedPanel noButton = new RoundedPanel(10);
+        noButton.setBackground(new Color(0, 153, 0));
+        noButton.setPreferredSize(new Dimension(100, 36));
+        noButton.setLayout(new BorderLayout());
+        JLabel noLabel = new JLabel("Từ chối", SwingConstants.CENTER);
+        noLabel.setForeground(Color.WHITE);
+        noLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        noButton.add(noLabel, BorderLayout.CENTER);
+        noButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                noButton.setBackground(BUTTON_HOVER_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                noButton.setBackground(new Color(0, 153, 0));
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dialog.dispose();
+            }
+        });
+        buttonPanel.add(noButton);
+
+        dialog.setVisible(true);
     }
+
 }
 
 class RoundedPanel extends JPanel {
