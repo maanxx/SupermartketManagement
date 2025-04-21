@@ -185,8 +185,6 @@ public class UserDashboard extends JFrame {
 
 
 
-
-
         // Main content area
         viewControlPanel = new RoundedPanel(10);
         viewControlPanel.setLayout(new BorderLayout());
@@ -215,7 +213,7 @@ public class UserDashboard extends JFrame {
 
         // Load icon từ thư mục tuyệt đối/tương đối như bạn đang dùng
         JLabel iconLabel = new JLabel();
-        ImageIcon icon = new ImageIcon(iconPath); // ví dụ: "/img/box.png"
+        ImageIcon icon = new ImageIcon(iconPath);
         if (icon.getImage() != null) {
             Image scaledImage = icon.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
             iconLabel.setIcon(new ImageIcon(scaledImage));
@@ -294,7 +292,8 @@ public class UserDashboard extends JFrame {
 
     private void openBanHang() {
         viewControlPanel.removeAll();
-        viewControlPanel.add(new QuanLyBanHangFrame(sanPhamService));
+        viewControlPanel.add(new QuanLyBanHangFrame(sanPhamService), BorderLayout.CENTER);
+
         viewControlPanel.revalidate();
         viewControlPanel.repaint();
     }
