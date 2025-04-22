@@ -131,7 +131,7 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnBanHang);
-        currentY += btnBanHang.getHeight() + 10;
+        currentY += btnBanHang.getHeight() + 30;
 
         RoundedPanel btnSanPham = createSidebarButtonPanel("Sản Phẩm", "img/iconSanPham.png", buttonX, currentY);
         btnSanPham.addMouseListener(new MouseAdapter() {
@@ -141,9 +141,9 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnSanPham);
-        currentY += btnSanPham.getHeight() + 10;
+        currentY += btnSanPham.getHeight() + 30;
 
-        RoundedPanel btnKhachHang = createSidebarButtonPanel("Khách Hàng", "img/iconNhanVien.png", buttonX, currentY);
+        RoundedPanel btnKhachHang = createSidebarButtonPanel("Khách Hàng", "img/iconKhachHang.png", buttonX, currentY);
         btnKhachHang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -151,7 +151,7 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnKhachHang);
-        currentY += btnKhachHang.getHeight() + 10;
+        currentY += btnKhachHang.getHeight() + 30;
 
         RoundedPanel btnNhanVien = createSidebarButtonPanel("Nhân Viên", "img/iconNhanVien.png", buttonX, currentY);
         btnNhanVien.addMouseListener(new MouseAdapter() {
@@ -161,7 +161,7 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnNhanVien);
-        currentY += btnNhanVien.getHeight() + 10;
+        currentY += btnNhanVien.getHeight() + 30;
 
         RoundedPanel btnHoaDon = createSidebarButtonPanel("Hóa Đơn", "img/iconBaoCao.png", buttonX, currentY);
         btnHoaDon.addMouseListener(new MouseAdapter() {
@@ -218,7 +218,8 @@ public class UserDashboard extends JFrame {
             Image scaledImage = icon.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
             iconLabel.setIcon(new ImageIcon(scaledImage));
         }
-        iconLabel.setBounds(10, (buttonHeight - iconSize) / 2, iconSize, iconSize);
+        // icon trong cái panel button
+        iconLabel.setBounds(60, (buttonHeight - iconSize) / 2, iconSize, iconSize);
         panel.add(iconLabel);
 
         // Text label
@@ -226,7 +227,8 @@ public class UserDashboard extends JFrame {
         JLabel label = new JLabel(text);
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
-        label.setBounds(iconSize + 20, 0, buttonWidth - iconSize - 30, buttonHeight);
+        // text trong cái panel button
+        label.setBounds(iconSize + 70, 0, buttonWidth - iconSize - 30, buttonHeight);
         panel.add(label);
 
         // Hover effects

@@ -22,7 +22,7 @@ public class MainClient {
     public static void main(String[] args) {
         try {
             // Mở cmd -> gõ ipconfig -> địa chỉ ipv4
-            String serverIp = "172.16.1.147";
+            String serverIp = "192.168.1.9";
             int port = 1099;
             Registry registry = LocateRegistry.getRegistry(serverIp, port);
 
@@ -33,8 +33,8 @@ public class MainClient {
 
             System.out.println(" Đã kết nối đến RMI Server tại: " + serverIp + ":" + port);
 
-//            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
-            SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, getNhanVienService()));
+            SwingUtilities.invokeLater(() -> new LoginFrame(getNhanVienService()));
+//              SwingUtilities.invokeLater(() -> new UserDashboard(nhanVien, getNhanVienService()));
 //            SwingUtilities.invokeLater(() -> new AdminDashboard(nhanVien, getNhanVienService()));
 //            SwingUtilities.invokeLater(() -> new QuanLyBanHangFrame(getSanPhamService()));
 

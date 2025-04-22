@@ -5,26 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="code man">
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/add.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/bin.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/img/edit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyHoaDonPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyNhanVienPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLySanPhamPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e5ebae8-dff3-417c-93a7-bdf71cd5a4ca/storage_v2/_src_/schema/supermarketmanagement.-gqfaw.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/rmi/NhanVienServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/rmi/NhanVienServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/z6448912666514_89998acaaa739b3e47ce1c2d96eafee0.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/AdminDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/AdminDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyHoaDonFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyHoaDonFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyNhanVienFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyNhanVienFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyBanHangFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyBanHangFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,9 +67,9 @@
     "Maven.SuperMarketManagement_Server [clean...].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging man",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/SupermartketManagement/SupermarketManagement_Client",
+    "last_opened_file_path": "D:/SupermartketManagement/SuperMarketManagement_Server",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -149,8 +134,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -170,6 +155,7 @@
       <workItem from="1744891908567" duration="7387000" />
       <workItem from="1745223196640" duration="5958000" />
       <workItem from="1745240101590" duration="1501000" />
+      <workItem from="1745302794033" duration="2591000" />
     </task>
     <task id="LOCAL-00001" summary="code man">
       <option name="closed" value="true" />
