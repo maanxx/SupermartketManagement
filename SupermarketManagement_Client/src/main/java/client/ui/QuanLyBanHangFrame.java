@@ -5,391 +5,219 @@ import shared.services.SanPhamService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.*;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuanLyBanHangFrame extends JFrame {
-
+public class QuanLyBanHangFrame extends JPanel implements ActionListener, DocumentListener, ItemListener, MouseListener {
     private final SanPhamService sanPhamService;
-    private JTable tableSanPham, tableGioHang;
-    private DefaultTableModel tableModelSanPham, tableModelGioHang;
-    private JTextField txtSearch;
-    private JLabel lblTongTien;
+    private JTable tableGioHang;
+    private DefaultTableModel tableModelGioHang;
+    private JTextField txtSearch, txtMaVach, txtSdt, txtDiemDoi, txtTienKhach;
+    private JLabel lblTongTien, lblTongTienHD, lblValueTongTien, lblValueTongTienHD, lblValueTienThua, lblValueDiem, lblValueGiaCuoiCung;
+    private JButton btnLamMoiGH, btnTimSDT, btnHuy, btnThemKhach, btnThanhToan;
+    private JCheckBox checkBoxDiem;
     private List<SanPhamDTO> gioHang;
+    private JPanel pSanPham;
+    private boolean StatusDoiTichDiem = false;
+
+    // Colors matching Gui_BanHang
+    private static final Color PANEL_BG_COLOR = new Color(220, 239, 218);
+    private static final Color CART_BG_COLOR = new Color(224, 240, 196);
+    private static final Color PRICE_COLOR = new Color(0, 168, 84);
+
+    // Reference resolution
+    private static final int REF_WIDTH = 913;
+    private static final int REF_HEIGHT = 625;
+
+    private double widthScale;
+    private double heightScale;
+    private double fontScale;
 
     public QuanLyBanHangFrame(SanPhamService sanPhamService) {
         this.sanPhamService = sanPhamService;
         this.gioHang = new ArrayList<>();
+        initializeScalingFactors();
+        setPreferredSize(new Dimension((int) (widthScale * REF_WIDTH), (int) (heightScale * REF_HEIGHT)));
+        setLayout(new BorderLayout()); // Sử dụng BorderLayout để dễ dàng căn chỉnh các thành phần
 
-        setTitle("Quản Lý Bán Hàng");
-        setSize(1200, 800);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout(15, 15));
-        setResizable(false);
+        createUIComponents();
+    }
 
-        // Header Panel với gradient và animation
-        JPanel headerPanel = new JPanel(new BorderLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                GradientPaint gp = new GradientPaint(0, 0, new Color(67, 99, 235), 0, getHeight(), new Color(142, 158, 255));
-                g2d.setPaint(gp);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
-        headerPanel.setPreferredSize(new Dimension(1200, 100));
-        headerPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        JLabel lblHeader = new JLabel("QUẢN LÝ BÁN HÀNG", SwingConstants.CENTER);
-        lblHeader.setFont(new Font("Segoe UI", Font.BOLD, 34));
-        lblHeader.setForeground(Color.WHITE);
-        headerPanel.add(lblHeader, BorderLayout.CENTER);
-        add(headerPanel, BorderLayout.NORTH);
+    private void initializeScalingFactors() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
 
-        // Content Panel
-        JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBackground(new Color(240, 242, 245));
-        contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        add(contentPanel, BorderLayout.CENTER);
+        widthScale = screenWidth / (double) REF_WIDTH;
+        heightScale = screenHeight / (double) REF_HEIGHT;
+        fontScale = Math.min(widthScale, heightScale);
+    }
 
-        // Search Panel với animation
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-        searchPanel.setBackground(new Color(240, 242, 245));
-        JLabel lblSearch = new JLabel("Tìm Kiếm:");
-        lblSearch.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        lblSearch.setForeground(new Color(67, 99, 235));
-        txtSearch = new JTextField(30);
-        txtSearch.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txtSearch.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true),
-                new EmptyBorder(10, 15, 10, 15)));
-        txtSearch.setBackground(Color.WHITE);
-        JButton btnSearch = createAnimatedButton("🔍 Tìm Kiếm");
-        btnSearch.addActionListener(e -> searchProduct());
-        searchPanel.add(lblSearch);
-        searchPanel.add(txtSearch);
-        searchPanel.add(btnSearch);
+    private void createUIComponents() {
+        add(createHoaDonPanel(), BorderLayout.NORTH); // Đưa panel hóa đơn lên phía trên
+        add(createProductPanel(), BorderLayout.CENTER); // Panel sản phẩm sẽ chiếm giữa
+        add(createCheckoutPanel(), BorderLayout.SOUTH); // Panel thanh toán sẽ nằm ở dưới
+    }
 
-        // Panel Sản Phẩm
-        JPanel panelSanPham = new JPanel(new BorderLayout());
-        panelSanPham.setBackground(Color.WHITE);
-        panelSanPham.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
-                new EmptyBorder(15, 15, 15, 15)));
-        panelSanPham.add(searchPanel, BorderLayout.NORTH);
+    private JPanel createHoaDonPanel() {
+        JPanel pHoaDon = new JPanel();
+        pHoaDon.setBackground(CART_BG_COLOR);
+        pHoaDon.setBounds(0, 0, scaleWidth(600), scaleHeight(200));
+        pHoaDon.setLayout(new BorderLayout(0, 0));
 
-        String[] columnNamesSanPham = {"Mã SP", "Tên Sản Phẩm", "Giá", "Số Lượng"};
-        tableModelSanPham = new DefaultTableModel(columnNamesSanPham, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        tableSanPham = new JTable(tableModelSanPham);
-        styleTable(tableSanPham);
-        JScrollPane scrollPaneSanPham = new JScrollPane(tableSanPham);
-        scrollPaneSanPham.setBorder(new EmptyBorder(10, 10, 10, 10));
-        panelSanPham.add(scrollPaneSanPham, BorderLayout.CENTER);
-
-        JButton btnThemGioHang = createAnimatedButton("➕ Thêm Vào Giỏ");
-        btnThemGioHang.addActionListener(e -> themVaoGioHang());
-        JPanel btnPanelSanPham = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        btnPanelSanPham.setBackground(Color.WHITE);
-        btnPanelSanPham.add(btnThemGioHang);
-        panelSanPham.add(btnPanelSanPham, BorderLayout.SOUTH);
-
-        // Panel Giỏ Hàng
-        JPanel panelGioHang = new JPanel(new BorderLayout());
-        panelGioHang.setBackground(Color.WHITE);
-        panelGioHang.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200)),
-                new EmptyBorder(15, 15, 15, 15)));
-        JLabel lblGioHang = new JLabel("GIỎ HÀNG", SwingConstants.CENTER);
-        lblGioHang.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        lblGioHang.setForeground(new Color(67, 99, 235));
-        panelGioHang.add(lblGioHang, BorderLayout.NORTH);
-
-        String[] columnNamesGioHang = {"Mã SP", "Tên Sản Phẩm", "Giá", "SL", "Thành Tiền"};
-        tableModelGioHang = new DefaultTableModel(columnNamesGioHang, 0) {
+        tableModelGioHang = new DefaultTableModel(new String[]{"Mã SP", "Mã Giá", "Tên SP", "DVT", "SL", "Đơn Giá", "Thành Tiền"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
         tableGioHang = new JTable(tableModelGioHang);
-        styleTable(tableGioHang);
-        JScrollPane scrollPaneGioHang = new JScrollPane(tableGioHang);
-        scrollPaneGioHang.setBorder(new EmptyBorder(10, 10, 10, 10));
-        panelGioHang.add(scrollPaneGioHang, BorderLayout.CENTER);
+        tableGioHang.setRowHeight(scaleHeight(25));
+        tableGioHang.getTableHeader().setFont(new Font("Segoe UI Semibold", Font.BOLD, scaleFont(12)));
+        tableGioHang.getColumnModel().getColumn(3).setPreferredWidth(scaleWidth(80));
+        tableGioHang.getColumnModel().getColumn(4).setPreferredWidth(scaleWidth(40));
+        tableGioHang.addMouseListener(this);
 
-        JButton btnXoaKhoiGio = createAnimatedButton("🗑️ Xóa Khỏi Giỏ");
-        btnXoaKhoiGio.addActionListener(e -> xoaKhoiGioHang());
-        JPanel btnPanelGioHang = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        btnPanelGioHang.setBackground(Color.WHITE);
-        btnPanelGioHang.add(btnXoaKhoiGio);
-        panelGioHang.add(btnPanelGioHang, BorderLayout.SOUTH);
-
-        // Split Pane
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelSanPham, panelGioHang);
-        splitPane.setDividerLocation(600);
-        splitPane.setContinuousLayout(true);
-        splitPane.setBorder(new EmptyBorder(10, 10, 10, 10));
-        contentPanel.add(splitPane, BorderLayout.CENTER);
-
-        // Checkout Panel
-        JPanel checkoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
-        checkoutPanel.setBackground(new Color(240, 242, 245));
-        checkoutPanel.setBorder(new EmptyBorder(10, 15, 10, 15));
-        lblTongTien = new JLabel("Tổng Tiền: 0 VND");
-        lblTongTien.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTongTien.setForeground(new Color(67, 99, 235));
-        JButton btnThanhToan = createAnimatedButton(" Thanh Toán");
-        btnThanhToan.addActionListener(e -> thanhToan());
-        checkoutPanel.add(lblTongTien);
-        checkoutPanel.add(btnThanhToan);
-        contentPanel.add(checkoutPanel, BorderLayout.SOUTH);
-
-        // Animation khi mở frame
-        setVisible(true);
-        Timer fadeInTimer = new Timer(20, new ActionListener() {
-            float opacity = 0f;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                opacity += 0.05f;
-                if (opacity >= 1f) ((Timer) e.getSource()).stop();
-            }
-        });
-        fadeInTimer.start();
-
-        loadProductData();
+        JScrollPane scrollTableGioHang = new JScrollPane(tableGioHang);
+        pHoaDon.add(scrollTableGioHang, BorderLayout.CENTER);
+        return pHoaDon;
     }
 
-    private JButton createAnimatedButton(String text) {
-        JButton button = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setColor(getBackground());
-                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
-                super.paintComponent(g);
-            }
-        };
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        button.setBackground(new Color(67, 99, 235));
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setOpaque(false);
-        button.setBorder(new EmptyBorder(12, 25, 12, 25));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    private JPanel createProductPanel() {
+        JPanel pWrapSP = new JPanel();
+        pWrapSP.setBackground(PANEL_BG_COLOR);
+        pWrapSP.setBorder(new LineBorder(Color.BLACK));
+        pWrapSP.setBounds(0, scaleHeight(200), scaleWidth(600), scaleHeight(300));
+        pWrapSP.setLayout(null);
 
-        // Hiệu ứng hover và scale
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(92, 124, 250));
-                animateScale(button, 1.05f);
-            }
+        JLabel lblTimSP = new JLabel("Tên hoặc mã SP:");
+        lblTimSP.setFont(new Font("Segoe UI Semibold", Font.BOLD, scaleFont(12)));
+        lblTimSP.setBounds(scaleWidth(10), scaleHeight(10), scaleWidth(100), scaleHeight(20));
+        pWrapSP.add(lblTimSP);
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(new Color(67, 99, 235));
-                animateScale(button, 1.0f);
-            }
+        txtSearch = new JTextField();
+        txtSearch.setBounds(scaleWidth(120), scaleHeight(10), scaleWidth(220), scaleHeight(20));
+        txtSearch.setColumns(10);
+        txtSearch.getDocument().addDocumentListener(this);
+        pWrapSP.add(txtSearch);
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-                button.setBackground(new Color(47, 79, 215));
-                animateScale(button, 0.95f);
-            }
+        btnLamMoiGH = new JButton("Làm mới giỏ hàng");
+        btnLamMoiGH.setFont(new Font("Segoe UI Semibold", Font.BOLD, scaleFont(10)));
+        btnLamMoiGH.setBounds(scaleWidth(350), scaleHeight(10), scaleWidth(150), scaleHeight(20));
+        btnLamMoiGH.addActionListener(this);
+        pWrapSP.add(btnLamMoiGH);
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                button.setBackground(new Color(67, 99, 235));
-                animateScale(button, 1.0f);
-            }
-        });
-        return button;
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(scaleWidth(10), scaleHeight(40), scaleWidth(580), scaleHeight(230));
+        pWrapSP.add(scrollPane);
+
+        pSanPham = new JPanel();
+        pSanPham.setBackground(PANEL_BG_COLOR);
+        pSanPham.setLayout(new FlowLayout(FlowLayout.LEFT));
+        pSanPham.setBorder(BorderFactory.createEmptyBorder(scaleWidth(10), scaleWidth(10), scaleHeight(10), scaleWidth(10)));
+        scrollPane.setViewportView(pSanPham);
+        return pWrapSP;
     }
 
-    private void animateScale(JComponent component, float scale) {
-        Timer timer = new Timer(10, new ActionListener() {
-            float currentScale = component.getWidth() / (float) component.getPreferredSize().width;
-            final float targetScale = scale;
-            final float step = (targetScale - currentScale) / 10;
+    private JPanel createCheckoutPanel() {
+        JPanel pBarThanhToan = new JPanel();
+        pBarThanhToan.setBackground(PANEL_BG_COLOR);
+        pBarThanhToan.setBounds(scaleWidth(610), 0, scaleWidth(240), scaleHeight(625));
+        pBarThanhToan.setLayout(null);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentScale += step;
-                if ((step > 0 && currentScale >= targetScale) || (step < 0 && currentScale <= targetScale)) {
-                    currentScale = targetScale;
-                    ((Timer) e.getSource()).stop();
-                }
-                int newWidth = (int) (component.getPreferredSize().width * currentScale);
-                int newHeight = (int) (component.getPreferredSize().height * currentScale);
-                component.setSize(newWidth, newHeight);
-                component.revalidate();
-            }
-        });
-        timer.start();
+        addCheckoutFields(pBarThanhToan);
+        addCheckoutButtons(pBarThanhToan);
+
+        return pBarThanhToan;
     }
 
-    private void styleTable(JTable table) {
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        table.setRowHeight(40);
-        table.setGridColor(new Color(220, 220, 220));
-        table.setShowGrid(true);
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        table.getTableHeader().setBackground(new Color(67, 99, 235));
-        table.getTableHeader().setForeground(Color.WHITE);
-        table.getTableHeader().setReorderingAllowed(false);
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        table.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                int row = table.rowAtPoint(e.getPoint());
-                if (row >= 0 && table.getRowCount() > 0) {
-                    table.setRowSelectionInterval(row, row);
-                }
-            }
-        });
+    private void addCheckoutFields(JPanel pBarThanhToan) {
+        JLabel lblMaVach = new JLabel("Mã vạch:");
+        lblMaVach.setFont(new Font("Segoe UI Semibold", Font.BOLD, scaleFont(12)));
+        lblMaVach.setBounds(scaleWidth(10), scaleHeight(10), scaleWidth(60), scaleHeight(20));
+        pBarThanhToan.add(lblMaVach);
+
+        txtMaVach = new JTextField();
+        txtMaVach.setBounds(scaleWidth(10), scaleHeight(30), scaleWidth(200), scaleHeight(20));
+        txtMaVach.setColumns(10);
+        txtMaVach.getDocument().addDocumentListener(this);
+        pBarThanhToan.add(txtMaVach);
     }
 
-    private void loadProductData() {
-        try {
-            List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
-            tableModelSanPham.setRowCount(0);
-            for (SanPhamDTO sp : productList) {
-                tableModelSanPham.addRow(new Object[]{
-                        sp.getMaSanPham(),
-                        sp.getTenSanPham(),
-                        sp.getGia(),
-                        sp.getSoLuong()
-                });
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi tải dữ liệu sản phẩm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
+    private void addCheckoutButtons(JPanel pBarThanhToan) {
+        btnThanhToan = new JButton("Thanh toán");
+        btnThanhToan.setFont(new Font("Segoe UI Semibold", Font.BOLD, scaleFont(18)));
+        btnThanhToan.setBounds(scaleWidth(20), scaleHeight(560), scaleWidth(200), scaleHeight(40));
+        btnThanhToan.addActionListener(this);
+        pBarThanhToan.add(btnThanhToan);
     }
 
-    private void searchProduct() {
-        String keyword = txtSearch.getText().trim().toLowerCase();
-        try {
-            List<SanPhamDTO> productList = sanPhamService.getAllSanPhams();
-            tableModelSanPham.setRowCount(0);
-            for (SanPhamDTO sp : productList) {
-                if (sp.getTenSanPham().toLowerCase().contains(keyword)) {
-                    tableModelSanPham.addRow(new Object[]{
-                            sp.getMaSanPham(),
-                            sp.getTenSanPham(),
-                            sp.getGia(),
-                            sp.getSoLuong()
-                    });
-                }
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi tìm kiếm sản phẩm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
+    private int scaleWidth(int width) {
+        return (int) (width * widthScale);
     }
 
-    private void themVaoGioHang() {
-        int selectedRow = tableSanPham.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        String maSP = tableModelSanPham.getValueAt(selectedRow, 0).toString();
-        String tenSP = tableModelSanPham.getValueAt(selectedRow, 1).toString();
-        double gia = Double.parseDouble(tableModelSanPham.getValueAt(selectedRow, 2).toString());
-        int soLuong;
-        try {
-            String input = JOptionPane.showInputDialog(this, "Nhập số lượng:");
-            if (input == null || input.trim().isEmpty()) return;
-            soLuong = Integer.parseInt(input.trim());
-            if (soLuong <= 0) {
-                JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Số lượng phải là số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        double thanhTien = gia * soLuong;
-        tableModelGioHang.addRow(new Object[]{maSP, tenSP, gia, soLuong, thanhTien});
-        capNhatTongTien();
+    private int scaleHeight(int height) {
+        return (int) (height * heightScale);
     }
 
-    private void xoaKhoiGioHang() {
-        int selectedRow = tableGioHang.getSelectedRow();
-        if (selectedRow >= 0) {
-            tableModelGioHang.removeRow(selectedRow);
-            capNhatTongTien();
-        } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm trong giỏ để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        }
+    private int scaleFont(int fontSize) {
+        return (int) (fontSize * fontScale);
     }
 
-    private void capNhatTongTien() {
-        double tongTien = 0;
-        for (int i = 0; i < tableModelGioHang.getRowCount(); i++) {
-            tongTien += Double.parseDouble(tableModelGioHang.getValueAt(i, 4).toString());
-        }
-        lblTongTien.setText("Tổng Tiền: " + String.format("%,.0f", tongTien) + " VND");
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Handle button actions
     }
 
-    private void thanhToan() {
-        if (tableModelGioHang.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "Giỏ hàng đang trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        StringBuilder hoaDon = new StringBuilder("HÓA ĐƠN\n\n");
-        hoaDon.append(String.format("%-15s %-20s %-10s %-10s %-10s\n", "Mã SP", "Tên SP", "Giá", "SL", "Thành tiền"));
-        hoaDon.append("--------------------------------------------------------------\n");
-        double tongTien = 0;
-        for (int i = 0; i < tableModelGioHang.getRowCount(); i++) {
-            String maSP = tableModelGioHang.getValueAt(i, 0).toString();
-            String tenSP = tableModelGioHang.getValueAt(i, 1).toString();
-            double gia = Double.parseDouble(tableModelGioHang.getValueAt(i, 2).toString());
-            int soLuong = Integer.parseInt(tableModelGioHang.getValueAt(i, 3).toString());
-            double thanhTien = gia * soLuong;
-            hoaDon.append(String.format("%-15s %-20s %-10.2f %-10d %-10.2f\n", maSP, tenSP, gia, soLuong, thanhTien));
-            tongTien += thanhTien;
-        }
-        hoaDon.append("\nTổng tiền: " + String.format("%,.0f", tongTien) + " VND\n");
-        hoaDon.append("--------------------------------------------------------------\n");
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        // Handle item state changes
+    }
 
-        String[] phuongThuc = {"💵 Tiền mặt", "💳 Thẻ ngân hàng"};
-        String chonThanhToan = (String) JOptionPane.showInputDialog(
-                this,
-                hoaDon.toString() + "\nChọn phương thức thanh toán:",
-                "Thanh Toán",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                phuongThuc,
-                phuongThuc[0]);
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // Handle mouse clicks
+    }
 
-        if (chonThanhToan != null) {
-            String maHoaDon = "HD" + System.currentTimeMillis();
-            String ngayLap = java.time.LocalDate.now().toString();
-            QuanLyHoaDonFrame.luuHoaDon(maHoaDon, ngayLap, tongTien, chonThanhToan);
-            JOptionPane.showMessageDialog(this, "Thanh toán thành công bằng " + chonThanhToan + "!\nSố tiền: " + String.format("%,.0f", tongTien) + " VND", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            tableModelGioHang.setRowCount(0);
-            capNhatTongTien();
-        }
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // Handle mouse press
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // Handle mouse release
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // Handle mouse enter
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // Handle mouse exit
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        // Handle document insert update
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        // Handle document remove update
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        // Handle document change update
     }
 }
