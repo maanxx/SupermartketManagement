@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="code man">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/server/MainServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/MainServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/MainClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyBanHangFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/QuanLyBanHangFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../SupermarketManagement_Client/src/main/java/client/ui/UserDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SupermartketManagement_Shared/.idea/dataSources.xml" beforeDir="false" />
-    </list>
+    <list default="true" id="cdb40662-bbf9-476d-9df8-c9a62fe9dbcf" name="Changes" comment="code man" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,7 +150,7 @@
       <workItem from="1745223196640" duration="5958000" />
       <workItem from="1745240101590" duration="1501000" />
       <workItem from="1745302794033" duration="2591000" />
-      <workItem from="1745386884694" duration="1396000" />
+      <workItem from="1745386884694" duration="1521000" />
     </task>
     <task id="LOCAL-00001" summary="code man">
       <option name="closed" value="true" />
