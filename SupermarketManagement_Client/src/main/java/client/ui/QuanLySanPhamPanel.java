@@ -223,6 +223,85 @@ public class QuanLySanPhamPanel extends JPanel {
             e.printStackTrace();
         }
     }
+    public class ThemSanPhamPanel extends JPanel {
+        public ThemSanPhamPanel(SanPhamService sanPhamService, Runnable onSuccess) {
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setBorder(new EmptyBorder(20, 20, 20, 20));
+            setBackground(Color.WHITE);
+
+            JTextField txtMaSP = new JTextField(20);
+            JTextField txtTenSP = new JTextField(20);
+            JTextField txtGia = new JTextField(20);
+            JTextField txtSoLuong = new JTextField(20);
+
+            JComboBox<String> cboLoai = new JComboBox<>();
+            JComboBox<String> cboNCC = new JComboBox<>();
+
+            JLabel lblAnh = new JLabel("Chưa chọn ảnh");
+            JButton btnChonAnh = new JButton("Chọn ảnh");
+            final byte[][] imageData = new byte[1][];
+            final String[] imageFileName = new String[1];
+
+            btnChonAnh.addActionListener(e -> {
+                JFileChooser chooser = new JFileChooser();
+                if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                    imageFileName[0] = file.getName();
+                    lblAnh.setText(file.getName());
+                    try {
+                        imageData[0] = java.nio.file.Files.readAllBytes(file.toPath());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            // Load dữ liệu loại và NCC
+            try {
+                for (LoaiSanPhamDTO l : sanPhamService.getAllLoaiSanPham()) {
+                    cboLoai.addItem(l.getMaLoai() + " - " + l.getTenLoai());
+                }
+                for (NhaCungCapDTO ncc : sanPhamService.getAllNhaCungCap()) {
+                    cboNCC.addItem(ncc.getMaNhaCungCap() + " - " + ncc.getTenNhaCungCap());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            JButton btnLuu = new JButton("Lưu");
+            btnLuu.addActionListener(e -> {
+                try {
+                    SanPhamDTO sp = new SanPhamDTO(
+                            txtMaSP.getText(),
+                            txtTenSP.getText(),
+                            cboNCC.getSelectedItem().toString().split(" - ")[0],
+                            cboLoai.getSelectedItem().toString().split(" - ")[0],
+                            Double.parseDouble(txtGia.getText()),
+                            Integer.parseInt(txtSoLuong.getText()),
+                            imageFileName[0]
+                    );
+                    sanPhamService.addSanPham(sp);
+                    if (imageData[0] != null) {
+                        sanPhamService.uploadHinhAnh(imageFileName[0], imageData[0]);
+                    }
+                    JOptionPane.showMessageDialog(this, "Đã thêm sản phẩm thành công!");
+                    onSuccess.run(); // Quay lại panel danh sách
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage());
+                }
+            });
+
+            add(new JLabel("Mã sản phẩm:")); add(txtMaSP);
+            add(new JLabel("Tên sản phẩm:")); add(txtTenSP);
+            add(new JLabel("Loại sản phẩm:")); add(cboLoai);
+            add(new JLabel("Nhà cung cấp:")); add(cboNCC);
+            add(new JLabel("Giá:")); add(txtGia);
+            add(new JLabel("Số lượng:")); add(txtSoLuong);
+            add(btnChonAnh); add(lblAnh);
+            add(Box.createRigidArea(new Dimension(0, 10)));
+            add(btnLuu);
+        }
+    }
 
 
     private void addProduct() {

@@ -301,7 +301,7 @@ public class UserDashboard extends JFrame {
 
     private void openQuanLyHoaDon() {
         viewControlPanel.removeAll();
-        viewControlPanel.add(new QuanLyHoaDonFrame());
+        viewControlPanel.add(new QuanLyHoaDonPanel());
         viewControlPanel.revalidate();
         viewControlPanel.repaint();
     }
