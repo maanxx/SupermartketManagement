@@ -4,7 +4,9 @@ import shared.dto.NhanVienDTO;
 import shared.services.NhanVienService;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -19,12 +21,16 @@ public class QuanLyNhanVienPanel extends JPanel {
     private JTable tableNhanVien;
     private DefaultTableModel tableModel;
     private JTextField txtMaNV, txtHoTen, txtDiaChi, txtSoDienThoai, txtChucVu;
-    private JDateChooser dateNgaySinh, dateNgayLamViec; // Changed to JDateChooser
+    private JDateChooser dateNgaySinh, dateNgayLamViec;
     private JComboBox<String> cbTrangThai;
     private JButton btnThem, btnSua, btnXoa, btnTiepLai;
     private JTextField txtSearchMaNV, txtSearchSoDienThoai;
     private boolean isEditMode = false;
     private String currentEditingMaNV = null;
+
+    private void applyCustomTableHeader(JTable table) {
+        table.getTableHeader().setDefaultRenderer(new CustomTableHeaderRenderer(table));
+    }
 
     public QuanLyNhanVienPanel(NhanVienService nhanVienService) {
         this.nhanVienService = nhanVienService;
@@ -73,12 +79,12 @@ public class QuanLyNhanVienPanel extends JPanel {
         // Table
         setupTable();
         bottomPanel.add(new JScrollPane(tableNhanVien), BorderLayout.CENTER);
+
+        applyCustomTableHeader(tableNhanVien);
     }
 
     private void setupTable() {
-        // Match table columns to the image
-        String[] columnNames = {"Mã Nhân viên", "Tên nhân viên", "Địa Chỉ", "Số Điện Thoại", "Chức vụ",
-                "Ngày Sinh", "Ngày làm việc", "Trạng thái"};
+        String[] columnNames = {"Mã NV", "Họ tên", "Địa chỉ", "SĐT", "Chức vụ", "Ngày sinh", "Ngày LV", "Trạng thái"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -86,11 +92,15 @@ public class QuanLyNhanVienPanel extends JPanel {
         };
 
         tableNhanVien = new JTable(tableModel);
-        tableNhanVien.setRowHeight(30);
-        tableNhanVien.setFont(new Font("Arial", Font.PLAIN, 12));
-        tableNhanVien.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        tableNhanVien.setSelectionBackground(new Color(200, 220, 240));
-        tableNhanVien.setGridColor(new Color(200, 200, 200));
+        tableNhanVien.setRowHeight(28);
+        tableNhanVien.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tableNhanVien.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        tableNhanVien.getTableHeader().setBackground(new Color(0, 102, 204));
+        tableNhanVien.getTableHeader().setForeground(Color.WHITE);
+        tableNhanVien.setSelectionBackground(new Color(200, 220, 255));
+        tableNhanVien.setGridColor(new Color(220, 220, 220));
+        tableNhanVien.setShowHorizontalLines(true);
+        tableNhanVien.setShowVerticalLines(false);
 
         tableNhanVien.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -103,35 +113,50 @@ public class QuanLyNhanVienPanel extends JPanel {
                 }
             }
         });
+
+        tableNhanVien.getTableHeader().setReorderingAllowed(false);
+
     }
 
     private JPanel createFormPanel() {
         JPanel panel = new JPanel(new GridLayout(8, 2, 10, 10));
-        panel.setBackground(new Color(180, 200, 220));
-        panel.setBorder(BorderFactory.createTitledBorder("Thông tin nhân viên"));
+        panel.setBackground(new Color(180, 200, 220));  // Màu nền giống khung chức năng
 
+        // TitledBorder với màu chữ đen và không có viền
+        TitledBorder titledBorder = BorderFactory.createTitledBorder("Thông tin nhân viên");
+        titledBorder.setTitleJustification(TitledBorder.CENTER);
+        titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 20)); // Font chữ to hơn
+        titledBorder.setTitleColor(Color.BLACK); // Màu chữ đen
+
+        panel.setBorder(titledBorder);
+
+        // Tạo các JTextField và JDateChooser với kích thước giống nhau
         txtMaNV = new JTextField();
         txtMaNV.setEditable(false);
-        txtMaNV.setHorizontalAlignment(JTextField.CENTER); // Center text
+        txtMaNV.setPreferredSize(new Dimension(200, 40)); // Kích thước giống nhau
         txtHoTen = new JTextField();
-        txtHoTen.setHorizontalAlignment(JTextField.CENTER); // Center text
+        txtHoTen.setPreferredSize(new Dimension(200, 40));
         txtDiaChi = new JTextField();
-        txtDiaChi.setHorizontalAlignment(JTextField.CENTER); // Center text
+        txtDiaChi.setPreferredSize(new Dimension(200, 40));
         txtSoDienThoai = new JTextField();
-        txtSoDienThoai.setHorizontalAlignment(JTextField.CENTER); // Center text
+        txtSoDienThoai.setPreferredSize(new Dimension(200, 40));
         txtChucVu = new JTextField();
-        txtChucVu.setHorizontalAlignment(JTextField.CENTER); // Center text
-        dateNgaySinh = new JDateChooser(); // Use JDateChooser for date selection
-        dateNgaySinh.setDateFormatString("dd/MM/yyyy"); // Set date format
-        dateNgayLamViec = new JDateChooser(); // Use JDateChooser for date selection
-        dateNgayLamViec.setDateFormatString("dd/MM/yyyy"); // Set date format
+        txtChucVu.setPreferredSize(new Dimension(200, 40));
+        dateNgaySinh = new JDateChooser();
+        dateNgaySinh.setDateFormatString("dd/MM/yyyy");
+        dateNgaySinh.setPreferredSize(new Dimension(200, 40));
+        dateNgayLamViec = new JDateChooser();
+        dateNgayLamViec.setDateFormatString("dd/MM/yyyy");
+        dateNgayLamViec.setPreferredSize(new Dimension(200, 40));
         cbTrangThai = new JComboBox<>(new String[]{"Đang làm", "Nghỉ việc"});
+        cbTrangThai.setPreferredSize(new Dimension(200, 40));
 
         // Center the text in JComboBox
         DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        renderer.setHorizontalAlignment(SwingConstants.LEFT);
         cbTrangThai.setRenderer(renderer);
 
+        // Thêm các thành phần vào panel
         panel.add(new JLabel("Mã Nhân viên:"));
         panel.add(txtMaNV);
         panel.add(new JLabel("Tên nhân viên:"));
@@ -152,21 +177,45 @@ public class QuanLyNhanVienPanel extends JPanel {
         return panel;
     }
 
-    private JPanel createButtonPanel() {
-        // Use GridLayout with smaller gaps to match the image
-        JPanel panel = new JPanel(new GridLayout(4, 1, 5, 2)); // Reduced vertical gap to 2px
-        panel.setBackground(new Color(180, 200, 220));
-        panel.setBorder(BorderFactory.createTitledBorder("Chức năng"));
 
+
+
+
+    private JPanel createButtonPanel() {
+        // Tạo panel chứa các nút
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        panel.setBackground(new Color(180, 200, 220));
+
+        // TitledBorder với màu chữ trắng và nền xanh nhạt
+        TitledBorder titledBorder = BorderFactory.createTitledBorder("Chức năng");
+        titledBorder.setTitleJustification(TitledBorder.CENTER);
+        titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 20)); // Font chữ to hơn
+        titledBorder.setTitleColor(Color.BLACK); // Màu chữ trắng
+
+        // Tạo màu nền xanh nhạt cho border
+        Border outerBorder = BorderFactory.createLineBorder(new Color(173, 216, 230), 2); // Màu xanh nhạt
+        titledBorder.setBorder(BorderFactory.createCompoundBorder(outerBorder, titledBorder.getBorder())); // Áp dụng border
+
+        panel.setBorder(titledBorder);
+
+        // Cấu hình GridBagConstraints để căn giữa các nút
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        // Kích thước và font chữ của các nút
+        Dimension buttonSize = new Dimension(120, 40);
+        Font buttonFont = new Font("Arial", Font.BOLD, 14);
+
+        // Tạo các nút
         btnThem = new JButton("Thêm");
         btnSua = new JButton("Sửa");
         btnXoa = new JButton("Xóa");
         btnTiepLai = new JButton("Tải Lại");
 
-        // Set button properties with smaller size
-        Dimension buttonSize = new Dimension(90, 30); // Button size matches image
-        Font buttonFont = new Font("Arial", Font.PLAIN, 12); // Font size matches image
-
+        // Cài đặt các nút
         btnThem.setPreferredSize(buttonSize);
         btnThem.setFont(buttonFont);
         btnThem.setBackground(new Color(0, 102, 204));
@@ -187,6 +236,7 @@ public class QuanLyNhanVienPanel extends JPanel {
         btnTiepLai.setBackground(new Color(0, 102, 204));
         btnTiepLai.setForeground(Color.WHITE);
 
+        // Gắn sự kiện cho các nút
         btnThem.addActionListener(e -> showAddNhanVienForm());
         btnSua.addActionListener(e -> {
             int selectedRow = tableNhanVien.getSelectedRow();
@@ -197,25 +247,37 @@ public class QuanLyNhanVienPanel extends JPanel {
         // btnXoa.addActionListener(e -> deleteNhanVien());
         btnTiepLai.addActionListener(e -> clearForm());
 
-        panel.add(btnThem);
-        panel.add(btnSua);
-        panel.add(btnXoa);
-        panel.add(btnTiepLai);
+        // Thêm các nút vào panel theo chiều dọc và căn giữa
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(btnThem, gbc);
+
+        gbc.gridy++;
+        panel.add(btnSua, gbc);
+
+        gbc.gridy++;
+        panel.add(btnXoa, gbc);
+
+        gbc.gridy++;
+        panel.add(btnTiepLai, gbc);
 
         return panel;
     }
 
+
+
+
+
+
     private JPanel createSearchPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         panel.setBackground(new Color(180, 200, 220));
-        panel.setBorder(BorderFactory.createTitledBorder("Tìm kiếm nhân viên")); // Added titled border
 
         panel.add(new JLabel("Nhập mã nhân viên:"));
-        txtSearchMaNV = new JTextField(10); // Reduced size to match image
+        txtSearchMaNV = new JTextField(10);
         panel.add(txtSearchMaNV);
 
         panel.add(new JLabel("Nhập số điện thoại:"));
-        txtSearchSoDienThoai = new JTextField(10); // Reduced size to match image
+        txtSearchSoDienThoai = new JTextField(10);
         panel.add(txtSearchSoDienThoai);
 
         return panel;
@@ -238,7 +300,6 @@ public class QuanLyNhanVienPanel extends JPanel {
         txtSoDienThoai.setText(tableModel.getValueAt(selectedRow, 3).toString());
         txtChucVu.setText(tableModel.getValueAt(selectedRow, 4).toString());
 
-        // Parse and set date for Ngày Sinh
         try {
             String dateStr = tableModel.getValueAt(selectedRow, 5).toString();
             if (!dateStr.isEmpty()) {
@@ -252,7 +313,6 @@ public class QuanLyNhanVienPanel extends JPanel {
             dateNgaySinh.setDate(null);
         }
 
-        // Parse and set date for Ngày làm việc
         try {
             String dateStr = tableModel.getValueAt(selectedRow, 6).toString();
             if (!dateStr.isEmpty()) {
@@ -269,14 +329,30 @@ public class QuanLyNhanVienPanel extends JPanel {
         cbTrangThai.setSelectedItem(tableModel.getValueAt(selectedRow, 7).toString());
     }
 
+    private void deleteNhanVien() {
+        int selectedRow = tableNhanVien.getSelectedRow();
+        if (selectedRow >= 0) {
+            String maNV = tableModel.getValueAt(selectedRow, 0).toString();
+            try {
+                nhanVienService.deleteNhanVien(maNV);
+                tableModel.removeRow(selectedRow);
+                JOptionPane.showMessageDialog(this, "Nhân viên đã được xóa.");
+            } catch (RemoteException e) {
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa nhân viên.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần xóa.");
+        }
+    }
+
     private void clearForm() {
         txtMaNV.setText("");
         txtHoTen.setText("");
         txtDiaChi.setText("");
         txtSoDienThoai.setText("");
         txtChucVu.setText("");
-        dateNgaySinh.setDate(null); // Clear date picker
-        dateNgayLamViec.setDate(null); // Clear date picker
+        dateNgaySinh.setDate(null);
+        dateNgayLamViec.setDate(null);
         cbTrangThai.setSelectedIndex(0);
         isEditMode = false;
         currentEditingMaNV = null;
