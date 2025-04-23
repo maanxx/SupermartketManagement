@@ -227,7 +227,6 @@ public class UserDashboard extends JFrame {
         JLabel label = new JLabel(text);
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Times New Roman", Font.BOLD, fontSize));
-        // text trong cái panel button
         label.setBounds(iconSize + 70, 0, buttonWidth - iconSize - 30, buttonHeight);
         panel.add(label);
 
