@@ -307,11 +307,9 @@ public class UserDashboard extends JFrame {
     }
 
     private void openQuanLySanPham() {
-        viewControlPanel.removeAll();
-        viewControlPanel.add(new QuanLySanPhamUserFrame(sanPhamService));
-        viewControlPanel.revalidate();
-        viewControlPanel.repaint();
+        new QuanLySanPhamUserFrame(sanPhamService);
     }
+
 
     private void logout() {
         JDialog dialog = new JDialog(this, "Xác nhận đăng xuất", true);
