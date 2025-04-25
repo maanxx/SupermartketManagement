@@ -15,45 +15,54 @@ public class QuanLyNhanVienPanel extends JPanel {
     private final NhanVienService nhanVienService;
     private JTable tableNhanVien;
     private DefaultTableModel tableModel;
-    private JLabel statusLabel;
-    private JPanel formNhanVienPanel;
-    private JTextField txtMaNV, txtHoTen, txtSoDienThoai;
-    private JComboBox<String> cbChucDanh, cbRole;
-    private JButton btnOK, btnCancel;
+    private JTextField txtMaNV, txtHoTen, txtSoDienThoai, txtChucVu;
+    private JComboBox<String> cbRole;
+    private JButton btnThem, btnSua, btnXoa, btnTiepLai, btnLuu;
     private boolean isEditMode = false;
     private String currentEditingMaNV = null;
 
     public QuanLyNhanVienPanel(NhanVienService nhanVienService) {
         this.nhanVienService = nhanVienService;
-
         setLayout(new BorderLayout(10, 10));
-        setBackground(new Color(245, 248, 250));
+        setBackground(Color.WHITE);
         setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
-        contentPanel.setBackground(Color.WHITE);
-        contentPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(230, 235, 240)),
-                new EmptyBorder(10, 10, 10, 10)
-        ));
-        add(contentPanel, BorderLayout.CENTER);
+        // Top Form
+        JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
+        formPanel.setBackground(new Color(245, 250, 255));
+        formPanel.setBorder(BorderFactory.createTitledBorder("Thông tin nhân viên"));
 
-        setupTable();
-        contentPanel.add(new JScrollPane(tableNhanVien), BorderLayout.CENTER);
+        txtMaNV = new JTextField();
+        txtMaNV.setEditable(false);
+        txtHoTen = new JTextField();
+        txtChucVu = new JTextField();
+        txtSoDienThoai = new JTextField();
+        cbRole = new JComboBox<>(new String[]{"user", "admin"});
 
-        JPanel topPanel = createTopPanel();
-        contentPanel.add(topPanel, BorderLayout.NORTH);
+        formPanel.add(new JLabel("Mã nhân viên:"));
+        formPanel.add(txtMaNV);
+        formPanel.add(new JLabel("Họ tên:"));
+        formPanel.add(txtHoTen);
+        formPanel.add(new JLabel("Chức vụ:"));
+        formPanel.add(txtChucVu);
+        formPanel.add(new JLabel("Số điện thoại:"));
+        formPanel.add(txtSoDienThoai);
+        formPanel.add(new JLabel("Vai trò:"));
+        formPanel.add(cbRole);
 
-        add(createStatusPanel(), BorderLayout.SOUTH);
-        loadNhanVienData();
+        btnLuu = new JButton("Lưu");
 
-        formNhanVienPanel = createFormNhanVienPanel();
-        formNhanVienPanel.setVisible(false);
-        contentPanel.add(formNhanVienPanel, BorderLayout.SOUTH);
-    }
+        JPanel buttonFormPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonFormPanel.add(btnLuu);
 
-    private void setupTable() {
-        String[] columnNames = {"Mã NV", "Họ tên", "Chức danh", "Số điện thoại", "Vai trò"};
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(formPanel, BorderLayout.CENTER);
+        topPanel.add(buttonFormPanel, BorderLayout.SOUTH);
+
+        add(topPanel, BorderLayout.NORTH);
+
+        // Table setup
+        String[] columnNames = {"Mã NV", "Họ tên", "Chức vụ", "Số điện thoại", "Vai trò"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -61,129 +70,105 @@ public class QuanLyNhanVienPanel extends JPanel {
         };
 
         tableNhanVien = new JTable(tableModel);
-        tableNhanVien.setRowHeight(40);
-        tableNhanVien.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tableNhanVien.setRowHeight(28);
+        tableNhanVien.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tableNhanVien.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tableNhanVien.setSelectionBackground(new Color(220, 240, 255));
-        tableNhanVien.setGridColor(new Color(230, 230, 230));
+        tableNhanVien.setSelectionBackground(new Color(200, 220, 255));
+        tableNhanVien.getTableHeader().setReorderingAllowed(false);
 
         tableNhanVien.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && !e.isConsumed()) {
-                    e.consume();
-                    int selectedRow = tableNhanVien.getSelectedRow();
-                    if (selectedRow >= 0) {
-                        showEditNhanVienForm(selectedRow);
+                if (e.getClickCount() == 2) {
+                    int row = tableNhanVien.getSelectedRow();
+                    if (row >= 0) {
+                        showEditNhanVienForm(row);
                     }
                 }
             }
         });
-    }
 
-    private JPanel createTopPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        panel.setBackground(Color.WHITE);
+        add(new JScrollPane(tableNhanVien), BorderLayout.CENTER);
 
-        JButton btnAdd = new JButton("Thêm Nhân Viên");
-        btnAdd.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        btnAdd.setBackground(new Color(30, 144, 255));
-        btnAdd.setForeground(Color.WHITE);
-        btnAdd.setFocusPainted(false);
-        btnAdd.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btnAdd.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnAdd.addActionListener(e -> showAddNhanVienForm());
-        panel.add(btnAdd);
+        // Bottom button panel
+        btnThem = new JButton("Thêm mới");
+        btnSua = new JButton("Sửa");
+        btnXoa = new JButton("Xóa");
+        btnTiepLai = new JButton("Tải lại");
 
-        return panel;
-    }
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bottomPanel.add(btnThem);
+        bottomPanel.add(btnSua);
+        bottomPanel.add(btnXoa);
+        bottomPanel.add(btnTiepLai);
+        add(bottomPanel, BorderLayout.SOUTH);
 
-    private JPanel createStatusPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(40, 60, 85));
-        panel.setPreferredSize(new Dimension(0, 30));
+        // Events
+        btnThem.addActionListener(e -> showAddNhanVienForm());
+        btnLuu.addActionListener(e -> saveNhanVien());
+        btnSua.addActionListener(e -> {
+            int row = tableNhanVien.getSelectedRow();
+            if (row >= 0) showEditNhanVienForm(row);
+        });
+        btnXoa.addActionListener(e -> deleteNhanVien());
+        btnTiepLai.addActionListener(e -> loadNhanVienData());
 
-        statusLabel = new JLabel("Sẵn sàng");
-        statusLabel.setForeground(Color.WHITE);
-        statusLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        panel.add(statusLabel, BorderLayout.WEST);
-        return panel;
+        loadNhanVienData();
     }
 
     private void loadNhanVienData() {
         try {
-            statusLabel.setText("Đang tải dữ liệu...");
             List<NhanVienDTO> list = nhanVienService.getAllNhanViens();
             tableModel.setRowCount(0);
             for (NhanVienDTO nv : list) {
-                tableModel.addRow(new Object[]{nv.getMaNhanVien(), nv.getHoTen(), nv.getChucDanh(), nv.getSoDienThoai(), nv.getRole()});
+                Object[] row = {nv.getMaNhanVien(), nv.getHoTen(), nv.getChucDanh(), nv.getSoDienThoai(), nv.getRole()};
+                tableModel.addRow(row);
             }
-            statusLabel.setText("Đã tải " + list.size() + " nhân viên");
         } catch (RemoteException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 
-    private JPanel createFormNhanVienPanel() {
-        JPanel panel = new JPanel(new GridLayout(6, 2, 20, 20));
-        panel.setBackground(Color.WHITE);
-        panel.setPreferredSize(new Dimension(400, 300));
-
-        txtMaNV = new JTextField();
-        txtMaNV.setEditable(false);
-
-        txtHoTen = new JTextField();
-        cbChucDanh = new JComboBox<>(new String[]{"Quản lý cửa hàng", "Nhân viên bán hàng"});
-        cbRole = new JComboBox<>(new String[]{"User", "Admin"});
-        txtSoDienThoai = new JTextField();
-
-        cbChucDanh.addActionListener(e -> {
-            if (!isEditMode) {
-                txtMaNV.setText(generateMaNhanVien(cbChucDanh.getSelectedItem().toString()));
-            }
-
-            if (cbChucDanh.getSelectedItem().toString().equals("Quản lý cửa hàng")) {
-                cbRole.setSelectedItem("Admin");
-            } else {
-                cbRole.setSelectedItem("User");
-            }
-        });
-
-        panel.add(new JLabel("Mã nhân viên:"));
-        panel.add(txtMaNV);
-        panel.add(new JLabel("Họ tên:"));
-        panel.add(txtHoTen);
-        panel.add(new JLabel("Chức danh:"));
-        panel.add(cbChucDanh);
-        panel.add(new JLabel("Số điện thoại:"));
-        panel.add(txtSoDienThoai);
-        panel.add(new JLabel("Vai trò:"));
-        panel.add(cbRole);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(Color.WHITE);
-
-        btnOK = new JButton("OK");
-        btnCancel = new JButton("Hủy");
-
-        btnOK.setBackground(new Color(30, 144, 255));
-        btnOK.setForeground(Color.WHITE);
-        btnCancel.setBackground(Color.RED);
-        btnCancel.setForeground(Color.WHITE);
-
-        buttonPanel.add(btnOK);
-        buttonPanel.add(btnCancel);
-
-        btnOK.addActionListener(e -> handleFormOK());
-        btnCancel.addActionListener(e -> {
-            formNhanVienPanel.setVisible(false);
-            tableNhanVien.setVisible(true);
-        });
-
-        panel.add(buttonPanel);
-        return panel;
+    private void showAddNhanVienForm() {
+        isEditMode = false;
+        currentEditingMaNV = null;
+        clearForm();
+        txtMaNV.setText(generateMaNhanVien());
     }
 
-    private void handleFormOK() {
+    private void showEditNhanVienForm(int row) {
+        isEditMode = true;
+        currentEditingMaNV = tableModel.getValueAt(row, 0).toString();
+        txtMaNV.setText(currentEditingMaNV);
+        txtHoTen.setText(tableModel.getValueAt(row, 1).toString());
+        txtChucVu.setText(tableModel.getValueAt(row, 2).toString());
+        txtSoDienThoai.setText(tableModel.getValueAt(row, 3).toString());
+        cbRole.setSelectedItem(tableModel.getValueAt(row, 4).toString());
+    }
+
+    private void deleteNhanVien() {
+        int row = tableNhanVien.getSelectedRow();
+        if (row >= 0) {
+            String maNV = tableModel.getValueAt(row, 0).toString();
+            try {
+                nhanVienService.deleteNhanVien(maNV);
+                tableModel.removeRow(row);
+                JOptionPane.showMessageDialog(this, "Đã xóa nhân viên.");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa nhân viên.");
+            }
+        }
+    }
+
+    private void clearForm() {
+        txtMaNV.setText("");
+        txtHoTen.setText("");
+        txtChucVu.setText("");
+        txtSoDienThoai.setText("");
+        cbRole.setSelectedIndex(0);
+    }
+
+    private void saveNhanVien() {
         try {
             NhanVienDTO nv = new NhanVienDTO(
                     txtMaNV.getText(),
@@ -191,60 +176,31 @@ public class QuanLyNhanVienPanel extends JPanel {
                     "",
                     txtSoDienThoai.getText(),
                     "",
-                    cbChucDanh.getSelectedItem().toString(),
+                    txtChucVu.getText(),
                     cbRole.getSelectedItem().toString()
             );
 
             if (isEditMode) {
                 nhanVienService.updateNhanVien(nv);
-                JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công.");
             } else {
                 nhanVienService.addNhanVien(nv);
-                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công.");
             }
-
             loadNhanVienData();
-            formNhanVienPanel.setVisible(false);
-            tableNhanVien.setVisible(true);
+            clearForm();
         } catch (RemoteException e) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi xử lý!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi lưu nhân viên.");
         }
     }
 
-    private String generateMaNhanVien(String chucDanh) {
+    private String generateMaNhanVien() {
         try {
             List<NhanVienDTO> list = nhanVienService.getAllNhanViens();
-            int count = (int) list.stream().filter(nv -> nv.getChucDanh().equals(chucDanh)).count();
-            String prefix = chucDanh.equals("Quản lý cửa hàng") ? "ADMIN" : "USER";
-            return prefix + String.format("%04d", count + 1);
+            return "NV" + String.format("%04d", list.size() + 1);
         } catch (RemoteException e) {
-            return chucDanh.equals("Quản lý cửa hàng") ? "ADMIN0001" : "USER0001";
+            return "NV0001";
         }
-    }
-
-    private void showAddNhanVienForm() {
-        isEditMode = false;
-        currentEditingMaNV = null;
-
-        cbChucDanh.setSelectedIndex(0); // Gọi lại action listener để tự sinh mã
-        txtHoTen.setText("");
-        txtSoDienThoai.setText("");
-
-        tableNhanVien.setVisible(false);
-        formNhanVienPanel.setVisible(true);
-    }
-
-    private void showEditNhanVienForm(int selectedRow) {
-        isEditMode = true;
-        currentEditingMaNV = tableModel.getValueAt(selectedRow, 0).toString();
-
-        txtMaNV.setText(currentEditingMaNV);
-        txtHoTen.setText(tableModel.getValueAt(selectedRow, 1).toString());
-        cbChucDanh.setSelectedItem(tableModel.getValueAt(selectedRow, 2).toString());
-        txtSoDienThoai.setText(tableModel.getValueAt(selectedRow, 3).toString());
-        cbRole.setSelectedItem(tableModel.getValueAt(selectedRow, 4).toString());
-
-        tableNhanVien.setVisible(false);
-        formNhanVienPanel.setVisible(true);
     }
 }

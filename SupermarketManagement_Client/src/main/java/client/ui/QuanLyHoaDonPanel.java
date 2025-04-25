@@ -13,38 +13,45 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static client.ui.AdminDashboard.BUTTON_BG_COLOR;
+
 public class QuanLyHoaDonPanel extends JPanel {
     private JTable tableHoaDon;
     private DefaultTableModel tableModel;
     private static final List<String[]> danhSachHoaDon = new ArrayList<>();
     private JDateChooser dateChooser;
 
+    private void applyCustomTableHeader(JTable table) {
+        table.getTableHeader().setDefaultRenderer(new CustomTableHeaderRenderer(table));
+    }
+
     public QuanLyHoaDonPanel() {
         setLayout(new BorderLayout(10, 10));
-        setBackground(Color.WHITE);
+        setBackground(Color.WHITE); // Nền trắng cho panel chính
 
         add(createHeaderPanel(), BorderLayout.NORTH);
 
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+        contentPanel.setBackground(Color.WHITE); // Nền trắng cho contentPanel
         add(contentPanel, BorderLayout.CENTER);
 
         JPanel tablePanel = new JPanel(new BorderLayout(10, 10));
+        tablePanel.setBackground(Color.WHITE); // Nền trắng cho tablePanel
         contentPanel.add(tablePanel, BorderLayout.CENTER);
 
-        tablePanel.add(createDateFilterPanel(), BorderLayout.NORTH);
-        tablePanel.add(createTablePanel(), BorderLayout.CENTER);
+        tablePanel.add(createDateFilterPanel(), BorderLayout.NORTH); // Panel chọn ngày
+        tablePanel.add(createTablePanel(), BorderLayout.CENTER); // Panel bảng hóa đơn
 
         add(createButtonPanel(), BorderLayout.SOUTH);
 
         loadHoaDonData();
         setPreferredSize(new Dimension(1100, 700));
+        applyCustomTableHeader(tableHoaDon);
     }
 
     private JPanel createHeaderPanel() {
         JPanel headerPanel = new GradientHeaderPanel("Quản Lý Hóa Đơn");
-//        headerPanel.setPreferredSize(new Dimension(1920, 80));
-        headerPanel.setPreferredSize(new Dimension(0, 80)); // Chiều rộng tự co theo frame
-
+        headerPanel.setPreferredSize(new Dimension(0, 80));
         return headerPanel;
     }
 
@@ -94,13 +101,15 @@ public class QuanLyHoaDonPanel extends JPanel {
         tableHoaDon.setRowHeight(40);
         tableHoaDon.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         tableHoaDon.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tableHoaDon.getTableHeader().setBackground(new Color(52, 152, 219));
+        tableHoaDon.getTableHeader().setBackground(new Color(34, 193, 195));
         tableHoaDon.getTableHeader().setForeground(Color.WHITE);
+
+        tableHoaDon.getTableHeader().setReorderingAllowed(false);
 
         tableHoaDon.getColumnModel().getColumn(4).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
             JButton btn = new JButton("\uD83D\uDC41 Xem");
             btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-            btn.setBackground(new Color(41, 128, 185));
+            btn.setBackground(new Color(34, 193, 195));
             btn.setForeground(Color.WHITE);
             btn.setFocusPainted(false);
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -125,7 +134,7 @@ public class QuanLyHoaDonPanel extends JPanel {
 
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(Color.WHITE); // Nền trắng cho buttonPanel
         buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         return buttonPanel;
     }
@@ -133,12 +142,14 @@ public class QuanLyHoaDonPanel extends JPanel {
     private JPanel createDateFilterPanel() {
         JPanel dateFilterPanel = new JPanel(new GridBagLayout());
         dateFilterPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        dateFilterPanel.setBackground(Color.WHITE); // Nền trắng cho dateFilterPanel
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
         JLabel label = new JLabel("Chọn ngày:");
         label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        label.setForeground(Color.BLACK);
         gbc.gridx = 0;
         gbc.gridy = 0;
         dateFilterPanel.add(label, gbc);
@@ -152,8 +163,8 @@ public class QuanLyHoaDonPanel extends JPanel {
 
         JButton btnLocNgay = new JButton("Lọc theo ngày");
         btnLocNgay.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnLocNgay.setBackground(new Color(52, 152, 219));
-        btnLocNgay.setForeground(Color.WHITE);
+        btnLocNgay.setBackground(new Color(139, 195, 74));
+        btnLocNgay.setForeground(Color.BLACK);
         btnLocNgay.setFocusPainted(false);
         btnLocNgay.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnLocNgay.addActionListener(e -> locHoaDonTheoNgay());
@@ -232,7 +243,9 @@ public class QuanLyHoaDonPanel extends JPanel {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             int w = getWidth(), h = getHeight();
-            GradientPaint gp = new GradientPaint(0, 0, new Color(52, 152, 219), w, h, new Color(41, 128, 185));
+
+            // Vẽ nền màu xanh lá nhạt
+            GradientPaint gp = new GradientPaint(0, 0, BUTTON_BG_COLOR, w, h, BUTTON_BG_COLOR);
             g2d.setPaint(gp);
             g2d.fillRect(0, 0, w, h);
         }
@@ -248,6 +261,4 @@ public class QuanLyHoaDonPanel extends JPanel {
             g2d.drawString(title, (getWidth() - titleWidth) / 2, getHeight() / 2 + fm.getAscent() / 2 - 5);
         }
     }
-
-
 }

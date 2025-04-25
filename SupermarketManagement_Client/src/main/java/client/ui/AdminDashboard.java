@@ -111,6 +111,16 @@ public class AdminDashboard extends JFrame {
         int buttonX = 20;
         int currentY = logoPanelHeight + 20;
 
+        RoundedPanel btnTrangChu = createSidebarButtonPanel("Trang Chủ", "img/home.png", buttonX, currentY);
+        btnTrangChu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switchPanel("TRANGCHU");
+            }
+        });
+        sidebarRoot.add(btnTrangChu);
+        currentY += btnTrangChu.getHeight() + 15;
+
         RoundedPanel btnQLSanPham = createSidebarButtonPanel("Quản lý Sản phẩm", "img/iconSanPham.png", buttonX, currentY);
         btnQLSanPham.addMouseListener(new MouseAdapter() {
             @Override
@@ -119,7 +129,7 @@ public class AdminDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnQLSanPham);
-        currentY += btnQLSanPham.getHeight() + 30;
+        currentY += btnQLSanPham.getHeight() + 15;
 
         RoundedPanel btnQLHoaDon = createSidebarButtonPanel("Quản lý Hóa đơn", "img/iconHoaDon.png", buttonX, currentY);
         btnQLHoaDon.addMouseListener(new MouseAdapter() {
@@ -129,7 +139,7 @@ public class AdminDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnQLHoaDon);
-        currentY += btnQLHoaDon.getHeight() + 30;
+        currentY += btnQLHoaDon.getHeight() + 15;
 
         RoundedPanel btnQLNhanVien = createSidebarButtonPanel("Quản lý Nhân viên", "img/iconNhanVien.png", buttonX, currentY);
         btnQLNhanVien.addMouseListener(new MouseAdapter() {
@@ -139,7 +149,7 @@ public class AdminDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnQLNhanVien);
-        currentY += btnQLNhanVien.getHeight() + 30;
+        currentY += btnQLNhanVien.getHeight() + 15;
 
         RoundedPanel btnThongKe = createSidebarButtonPanel("Thống kê", "img/iconThongKe.png", buttonX, currentY);
         btnThongKe.addMouseListener(new MouseAdapter() {
@@ -149,7 +159,7 @@ public class AdminDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnThongKe);
-        currentY += btnThongKe.getHeight() + 30;
+        currentY += btnThongKe.getHeight() + 15;
 
         RoundedPanel btnDangXuat = createSidebarButtonPanel("Đăng Xuất", "img/iconDangXuat.png", buttonX, sidebarHeight - 70);
         btnDangXuat.addMouseListener(new MouseAdapter() {
@@ -168,6 +178,7 @@ public class AdminDashboard extends JFrame {
         mainPanel.add(viewControlPanel);
 
         // Add panels to viewControlPanel
+        viewControlPanel.add(new HomePanel(), "TRANGCHU");
         viewControlPanel.add(new ThongKeChartAdminPanel(MainClient.getHoaDonService(), sanPhamService, nhanVienService), "DASHBOARD");
 
         JPanel hoaDonWrapper = new JPanel(new BorderLayout());
@@ -179,7 +190,7 @@ public class AdminDashboard extends JFrame {
         viewControlPanel.add(new QuanLyNhanVienPanel(nhanVienService), "NHANVIEN");
 
         // Show initial panel
-        switchPanel("DASHBOARD");
+        switchPanel("TRANGCHU");
 
         setVisible(true);
     }

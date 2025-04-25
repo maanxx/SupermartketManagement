@@ -5,11 +5,14 @@ import jakarta.persistence.TypedQuery;
 import server.config.HibernateUtil;
 import server.entity.NhanVien;
 
+import java.util.List;
+
 public class NhanVienDAO extends BaseDAO<NhanVien> {
     public NhanVienDAO() {
         super(NhanVien.class);
     }
 
+    // Đăng nhập
     public NhanVien findByUsernameAndPassword(String username, String password) {
         EntityManager em = HibernateUtil.getEntityManager();
         try {

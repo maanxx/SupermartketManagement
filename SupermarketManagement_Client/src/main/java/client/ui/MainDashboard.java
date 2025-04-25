@@ -79,7 +79,7 @@ public class MainDashboard extends JFrame {
     }
 
     private void openQuanLySanPham() {
-        new QuanLySanPhamFrame(sanPhamService);
+        new QuanLySanPhamPanel(sanPhamService);
     }
 
     private void openQuanLyHoaDon() {
@@ -88,7 +88,7 @@ public class MainDashboard extends JFrame {
 
     private void openQuanLyNhanVien() {
         if ("ADMIN".equalsIgnoreCase(loggedInNhanVien.getRole())) {
-            new QuanLyNhanVienFrame(nhanVienService);
+            new QuanLyNhanVienPanel(nhanVienService);
         } else {
             JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập chức năng này!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
         }

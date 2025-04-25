@@ -121,7 +121,17 @@ public class UserDashboard extends JFrame {
 //////////////////
         // Tạo panel chứa các menu
         int buttonX = 20;
-        int currentY = logoPanelHeight + 20;
+        int currentY = logoPanelHeight + 10;
+
+        RoundedPanel btnTrangChu = createSidebarButtonPanel("Trang Chủ", "img/home.png", buttonX, currentY);
+        btnTrangChu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                openTrangChu();
+            }
+        });
+        sidebarRoot.add(btnTrangChu);
+        currentY += btnTrangChu.getHeight() + 15;
 
         RoundedPanel btnBanHang = createSidebarButtonPanel("Bán Hàng", "img/iconBanHang.png", buttonX, currentY);
         btnBanHang.addMouseListener(new MouseAdapter() {
@@ -131,7 +141,7 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnBanHang);
-        currentY += btnBanHang.getHeight() + 30;
+        currentY += btnBanHang.getHeight() + 15;
 
         RoundedPanel btnSanPham = createSidebarButtonPanel("Sản Phẩm", "img/iconSanPham.png", buttonX, currentY);
         btnSanPham.addMouseListener(new MouseAdapter() {
@@ -141,7 +151,7 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnSanPham);
-        currentY += btnSanPham.getHeight() + 30;
+        currentY += btnSanPham.getHeight() + 15;
 
         RoundedPanel btnKhachHang = createSidebarButtonPanel("Khách Hàng", "img/iconKhachHang.png", buttonX, currentY);
         btnKhachHang.addMouseListener(new MouseAdapter() {
@@ -151,7 +161,7 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnKhachHang);
-        currentY += btnKhachHang.getHeight() + 30;
+        currentY += btnKhachHang.getHeight() + 15;
 
         RoundedPanel btnNhanVien = createSidebarButtonPanel("Nhân Viên", "img/iconNhanVien.png", buttonX, currentY);
         btnNhanVien.addMouseListener(new MouseAdapter() {
@@ -161,7 +171,7 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnNhanVien);
-        currentY += btnNhanVien.getHeight() + 30;
+        currentY += btnNhanVien.getHeight() + 15;
 
         RoundedPanel btnHoaDon = createSidebarButtonPanel("Hóa Đơn", "img/iconBaoCao.png", buttonX, currentY);
         btnHoaDon.addMouseListener(new MouseAdapter() {
@@ -171,7 +181,17 @@ public class UserDashboard extends JFrame {
             }
         });
         sidebarRoot.add(btnHoaDon);
-        currentY += btnHoaDon.getHeight() + 10;
+        currentY += btnHoaDon.getHeight() + 15;
+
+        RoundedPanel btnThongKe = createSidebarButtonPanel("Thống Kê", "img/iconThongKe.png", buttonX, currentY);
+        btnThongKe.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                openThongKe();
+            }
+        });
+        sidebarRoot.add(btnThongKe);
+        currentY += btnThongKe.getHeight() + 15;
 
 // Đăng xuất (nằm ở cuối sidebar)
         RoundedPanel btnDangXuat = createSidebarButtonPanel("Đăng Xuất", "img/iconDangXuat.png", buttonX, sidebarHeight - 70);
@@ -191,8 +211,14 @@ public class UserDashboard extends JFrame {
         viewControlPanel.setBounds(contentX, 10, contentWidth, contentHeight);
         mainPanel.add(viewControlPanel);
 
+        viewControlPanel.add(new ThongKeChartAdminPanel(
+                MainClient.getHoaDonService(),
+                sanPhamService,
+                nhanVienService
+        ), BorderLayout.CENTER);
+
         // Initial content
-        viewControlPanel.add(new ThongKeChartUserPanel(MainClient.getHoaDonService(), MainClient.getSanPhamService()), BorderLayout.CENTER);
+        viewControlPanel.add(new HomePanel(), BorderLayout.CENTER);
 
         setVisible(true);
     }
@@ -291,27 +317,46 @@ public class UserDashboard extends JFrame {
         }
     }
 
+    private void openTrangChu() {
+        viewControlPanel.removeAll();
+        viewControlPanel.add(new HomePanel());
+        viewControlPanel.revalidate();
+        viewControlPanel.repaint();
+    }
+
+    private void openThongKe() {
+        viewControlPanel.removeAll();
+        viewControlPanel.add(new ThongKeChartAdminPanel(
+                MainClient.getHoaDonService(),
+                sanPhamService,
+                nhanVienService
+        ), BorderLayout.CENTER);
+        viewControlPanel.revalidate();
+        viewControlPanel.repaint();
+    }
+
     private void openBanHang() {
         viewControlPanel.removeAll();
         viewControlPanel.add(new QuanLyBanHangFrame(sanPhamService), BorderLayout.CENTER);
-
         viewControlPanel.revalidate();
         viewControlPanel.repaint();
     }
 
     private void openQuanLyHoaDon() {
         viewControlPanel.removeAll();
-        viewControlPanel.add(new QuanLyHoaDonFrame());
+        viewControlPanel.add(new QuanLyHoaDonPanel());
         viewControlPanel.revalidate();
         viewControlPanel.repaint();
     }
 
     private void openQuanLySanPham() {
         viewControlPanel.removeAll();
-        viewControlPanel.add(new QuanLySanPhamUserFrame(sanPhamService));
+        viewControlPanel.add(new QuanLySanPhamPanel(sanPhamService), BorderLayout.CENTER);
         viewControlPanel.revalidate();
         viewControlPanel.repaint();
+
     }
+
 
     private void logout() {
         JDialog dialog = new JDialog(this, "Xác nhận đăng xuất", true);
